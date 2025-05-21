@@ -1,0 +1,46 @@
+{
+  "remoteEnv": {
+    "EDITOR": "~/squashfs-root/AppRun",
+    "PAGER": "sed -r 's/\\x1B\\[[0-9;]*[mGKH]//g' | ~/squashfs-root/AppRun -R -",
+    "LESSCHARSET": "utf-8",
+    "SHELL": "bash",
+    "TERM": "xterm-256color",
+    "HISTCONTROL": "erasedups",
+    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY}",
+  },
+  "postCreateCommand": "npm install -g @openai/codex",
+  // devcontainer/cli はまだ forwardPorts に対応していないため、
+  // 必要に応じて forwardPorts の定義を appPort に転記する。
+  // ※ コンテナ側で Listen する際は、 `127.0.0.1` **ではなく** `0.0.0.0` で Listen すること。
+  // "appPort": [
+  // ],
+  // Linux で実行する場合には、 runArgs をコメントアウトし、コンテナからホストへの接続ができるようにしてください
+  //"runArgs": [
+  //  "--add-host=host.docker.internal:host-gateway"
+  //],
+  "mounts": [
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}/.vim",
+      "target": "/home/vscode/.vim"
+    },
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}/.gitconfig",
+      "target": "/home/vscode/.gitconfig"
+    },
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}/.ssh",
+      "target": "/home/vscode/.ssh"
+    },
+    {
+      "type": "bind",
+      "source": "${localEnv:HOME}/.codex",
+      "target": "/home/vscode/.codex"
+    },
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {}
+  }
+}

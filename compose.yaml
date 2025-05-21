@@ -1,0 +1,73 @@
+services:
+  dev:
+    image: mcr.microsoft.com/devcontainers/java:1-21-bookworm
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/messagestream
+    volumes:
+      - ./:/workspaces
+    ports:
+      - "0.0.0.0:5173:5173"
+      - "0.0.0.0:8081:8081"
+    command: ['sh', '-c',  'trap "exit 0" TERM; sleep infinity & wait']
+  postgres:
+    image: postgres:17
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./data/postgres/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: public
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "0.0.0.0:5432:5432"
+  keycloak:
+    # 本番環境で使用する場合には、ビルド済みの keycloak イメージを使うこと
+    # 本番は HTTPS 必須なので注意
+    # See: [Running Keycloak in a container - Keycloak](https://www.keycloak.org/server/containers)
+    image: quay.io/keycloak/keycloak:26.2
+    init: true
+    restart: always
+    environment:
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: false
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+    command: ["start-dev"]
+    ports:
+      - "0.0.0.0:8080:8080"
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+  kc-init:
+    image: mikoto2000/kcadm:19
+    init: true
+    restart: "no"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      REALM: myrealm
+      CLIENT_ID: myrealm-id
+      CLIENT_SECRET: myrealm-secret
+    volumes:
+      # 初期化スクリプト
+      - "./.devcontainer/script/kc-init/init.sh:/init.sh"
+    command:
+      - /init.sh
+
+volumes:
+  postgres_data:
+    driver: local
+
