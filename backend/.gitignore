@@ -13,6 +13,9 @@ target/
 # VSCode
 .vscode/
 
+# Eclipse
+.factorypath
+
 # OS files
 .DS_Store
 Thumbs.db
