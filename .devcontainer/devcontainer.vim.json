@@ -41,6 +41,7 @@
     },
   ],
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/robbert229/devcontainer-features/postgresql-client:1": {},
   }
 }
