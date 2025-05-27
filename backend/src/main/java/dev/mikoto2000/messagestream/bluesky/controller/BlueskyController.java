@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.model.AddInstanceRequest;
 import dev.mikoto2000.messagestream.bluesky.service.BlueskyManagementService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class BlueskyController {
   private final BlueskyManagementService blueskyService;
 
   @GetMapping("bluesky/instances")
-  public List<dev.mikoto2000.messagestream.bluesky.entity.BlueskyService> getInstances(
+  public List<BlueskyService> getInstances(
       @AuthenticationPrincipal Jwt jwt) {
 
     return blueskyService.getInstances();

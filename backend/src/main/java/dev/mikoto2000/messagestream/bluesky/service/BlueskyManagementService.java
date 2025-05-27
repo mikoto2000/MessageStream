@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
 import dev.mikoto2000.messagestream.signin.entity.Account;
 import dev.mikoto2000.messagestream.signin.repository.AccountRepository;
@@ -21,7 +22,7 @@ public class BlueskyManagementService {
   private final AccountRepository accountRepository;
   private final BlueskyServiceRepository blueskyServiceRepository;
 
-  public List<dev.mikoto2000.messagestream.bluesky.entity.BlueskyService> getInstances() {
+  public List<BlueskyService> getInstances() {
     return blueskyServiceRepository.findAll();
   }
 
@@ -38,7 +39,7 @@ public class BlueskyManagementService {
 
     log.info("target account: {}", account);
 
-    blueskyServiceRepository.save(new dev.mikoto2000.messagestream.bluesky.entity.BlueskyService(
+    blueskyServiceRepository.save(new BlueskyService(
         null,
         account.getId(),
         instanceUrl,
