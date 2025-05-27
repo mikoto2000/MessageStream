@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BlueskyService {
+public class BlueskyManagementService {
 
   private final AccountRepository accountRepository;
   private final BlueskyServiceRepository blueskyServiceRepository;
