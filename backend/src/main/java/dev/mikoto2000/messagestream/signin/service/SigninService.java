@@ -2,8 +2,8 @@ package dev.mikoto2000.messagestream.signin.service;
 
 import org.springframework.stereotype.Service;
 
-import dev.mikoto2000.messagestream.bluesky.model.Account;
-import dev.mikoto2000.messagestream.bluesky.repository.AccountRepository;
+import dev.mikoto2000.messagestream.signin.entity.Account;
+import dev.mikoto2000.messagestream.signin.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

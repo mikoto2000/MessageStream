@@ -3,6 +3,7 @@ package dev.mikoto2000.messagestream.signin.controller;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import dev.mikoto2000.messagestream.signin.service.SigninService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * SigninController
  */
+@RestController
 @RequiredArgsConstructor
 public class SigninController {
 
