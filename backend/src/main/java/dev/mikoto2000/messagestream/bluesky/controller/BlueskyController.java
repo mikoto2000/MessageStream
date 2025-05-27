@@ -1,7 +1,10 @@
 package dev.mikoto2000.messagestream.bluesky.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +23,13 @@ import lombok.extern.slf4j.Slf4j;
 public class BlueskyController {
 
   private final BlueskyService blueskyService;
+
+  @GetMapping("bluesky/instances")
+  public List<dev.mikoto2000.messagestream.bluesky.entity.BlueskyService> getInstances(
+      @AuthenticationPrincipal Jwt jwt) {
+
+    return blueskyService.getInstances();
+  }
 
   @PostMapping("bluesky/instances")
   public void addInstance(

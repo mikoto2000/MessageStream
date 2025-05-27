@@ -1,5 +1,7 @@
 package dev.mikoto2000.messagestream.bluesky.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
@@ -18,6 +20,10 @@ public class BlueskyService {
 
   private final AccountRepository accountRepository;
   private final BlueskyServiceRepository blueskyServiceRepository;
+
+  public List<dev.mikoto2000.messagestream.bluesky.entity.BlueskyService> getInstances() {
+    return blueskyServiceRepository.findAll();
+  }
 
   public void addInstance(
       String iss,
