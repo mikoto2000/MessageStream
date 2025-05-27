@@ -46,9 +46,11 @@ public class Bluesky {
 
     List<String> returnValue = new ArrayList<>();
     for (FeedDefsFeedViewPost post : posts) {
+      System.out.println(post);
       var record = post.getPost().getRecord();
       if (record instanceof FeedPost) {
         returnValue.add("📨 投稿: " + ((FeedPost)record).getText());
+        System.out.println("📨 投稿: " + ((FeedPost)record).getText());
       }
     }
 

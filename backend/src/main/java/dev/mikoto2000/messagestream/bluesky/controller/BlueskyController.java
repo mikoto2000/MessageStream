@@ -48,10 +48,10 @@ public class BlueskyController {
   }
 
   @PostMapping("bluesky/home")
-  public void getHomeTimeline(
+  public List<String> getHomeTimeline(
       @AuthenticationPrincipal Jwt jwt) {
 
-    blueskyService.getHomeTimeline(
+    return blueskyService.getHomeTimeline(
         jwt.getClaimAsString("iss"),
         jwt.getClaimAsString("sub"));
   }
