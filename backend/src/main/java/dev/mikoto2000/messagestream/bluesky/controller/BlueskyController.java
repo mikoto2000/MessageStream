@@ -46,4 +46,13 @@ public class BlueskyController {
         air.getHandle(),
         air.getPassword());
   }
+
+  @PostMapping("bluesky/home")
+  public void getHomeTimeline(
+      @AuthenticationPrincipal Jwt jwt) {
+
+    blueskyService.getHomeTimeline(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"));
+  }
 }

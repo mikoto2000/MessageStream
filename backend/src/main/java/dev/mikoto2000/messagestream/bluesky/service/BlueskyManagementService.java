@@ -1,9 +1,11 @@
 package dev.mikoto2000.messagestream.bluesky.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import dev.mikoto2000.messagestream.bluesky.domain.Bluesky;
 import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
 import dev.mikoto2000.messagestream.signin.entity.Account;
@@ -45,5 +47,34 @@ public class BlueskyManagementService {
         instanceUrl,
         handle,
         password));
+  }
+
+  public List<String> getHomeTimeline(
+      String iss,
+      String sub) {
+    log.info("Start getHomeTimeline");
+
+    Account account = accountRepository.findByIssuerAndSub(iss, sub);
+
+    log.info("account: {}", account);
+
+    List<BlueskyService> bskys = blueskyServiceRepository.findByAccountId(account.getId());
+
+    log.info("bskys: {}", bskys);
+
+    // TODO: String to Message
+    List<String> messages = new ArrayList<>();
+    for (var bsky : bskys) {
+      var b = new Bluesky(
+          bsky.getUrl(),
+          bsky.getHandle(),
+          bsky.getAppPassword());
+
+      messages.addAll(b.getHomeTimeline());
+    }
+
+    log.info("End getHomeTimeline");
+
+    return messages;
   }
 }
