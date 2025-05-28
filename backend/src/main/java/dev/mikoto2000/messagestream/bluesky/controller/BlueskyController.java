@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.mikoto2000.messagestream.bluesky.domain.Message;
 import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.model.AddInstanceRequest;
 import dev.mikoto2000.messagestream.bluesky.service.BlueskyManagementService;
@@ -48,7 +49,7 @@ public class BlueskyController {
   }
 
   @PostMapping("bluesky/home")
-  public List<String> getHomeTimeline(
+  public List<Message> getHomeTimeline(
       @AuthenticationPrincipal Jwt jwt) {
 
     return blueskyService.getHomeTimeline(

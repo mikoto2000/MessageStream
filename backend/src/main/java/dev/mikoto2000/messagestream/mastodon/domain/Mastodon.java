@@ -26,15 +26,18 @@ public class Mastodon {
     api = MyMastodonClient.create(url, AccessToken.create(accessToken));
   }
 
-  public List<String> getHomeTimeline() {
+  public List<Message> getHomeTimeline() {
     Timelines timelines = api.timelines();
     List<Status> homeTimeline = timelines.home();
 
-    List<String> returnValue = new ArrayList<>();
+    List<Message> returnValue = new ArrayList<>();
     for (Status status : homeTimeline) {
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.equals("")) {
-        returnValue.add(text);
+        returnValue.add(new Message(
+            status.account().display_name(),
+            text,
+            status.created_at().toInstant()));
       }
     }
 

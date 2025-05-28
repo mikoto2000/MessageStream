@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.mikoto2000.messagestream.mastodon.domain.Message;
 import dev.mikoto2000.messagestream.mastodon.entity.MastodonService;
 import dev.mikoto2000.messagestream.mastodon.model.AddInstanceRequest;
 import dev.mikoto2000.messagestream.mastodon.service.MastodonManagementService;
@@ -47,7 +48,7 @@ public class MastodonController {
   }
 
   @PostMapping("mastodon/home")
-  public List<String> getHomeTimeline(
+  public List<Message> getHomeTimeline(
       @AuthenticationPrincipal Jwt jwt) {
 
     return mastodonService.getHomeTimeline(

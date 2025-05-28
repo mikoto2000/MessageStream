@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import dev.mikoto2000.messagestream.bluesky.domain.Bluesky;
+import dev.mikoto2000.messagestream.bluesky.domain.Message;
 import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
 import dev.mikoto2000.messagestream.signin.entity.Account;
@@ -49,7 +50,7 @@ public class BlueskyManagementService {
         password));
   }
 
-  public List<String> getHomeTimeline(
+  public List<Message> getHomeTimeline(
       String iss,
       String sub) {
     log.info("Start getHomeTimeline");
@@ -63,8 +64,7 @@ public class BlueskyManagementService {
     log.info("bskys: {}", bskys);
 
     // TODO: インスタンスを毎回 new しないようにする
-    // TODO: String to Message
-    List<String> messages = new ArrayList<>();
+    List<Message> messages = new ArrayList<>();
     for (var bsky : bskys) {
       var b = new Bluesky(
           bsky.getUrl(),

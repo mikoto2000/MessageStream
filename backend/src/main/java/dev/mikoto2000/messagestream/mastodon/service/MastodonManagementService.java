@@ -9,6 +9,7 @@ import dev.mikoto2000.messagestream.bluesky.domain.Bluesky;
 import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
 import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
 import dev.mikoto2000.messagestream.mastodon.domain.Mastodon;
+import dev.mikoto2000.messagestream.mastodon.domain.Message;
 import dev.mikoto2000.messagestream.mastodon.entity.MastodonService;
 import dev.mikoto2000.messagestream.mastodon.repository.MastodonServiceRepository;
 import dev.mikoto2000.messagestream.signin.entity.Account;
@@ -50,7 +51,7 @@ public class MastodonManagementService {
         accessToken));
   }
 
-  public List<String> getHomeTimeline(
+  public List<Message> getHomeTimeline(
       String iss,
       String sub) {
     log.info("Start getHomeTimeline");
@@ -64,14 +65,13 @@ public class MastodonManagementService {
     log.info("mastodon: {}", mastodons);
 
     // TODO: インスタンスを毎回 new しないようにする
-    // TODO: String to Message
-    List<String> messages = new ArrayList<>();
+    List<Message> messages = new ArrayList<>();
     for (var mastodon : mastodons) {
-      var b = new Mastodon(
+      var m = new Mastodon(
           mastodon.getUrl(),
           mastodon.getAccessToken());
 
-      messages.addAll(b.getHomeTimeline());
+      messages.addAll(m.getHomeTimeline());
     }
 
     log.info("End getHomeTimeline");
