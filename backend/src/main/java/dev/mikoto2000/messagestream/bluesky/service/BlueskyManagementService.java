@@ -62,6 +62,7 @@ public class BlueskyManagementService {
 
     log.info("bskys: {}", bskys);
 
+    // TODO: インスタンスを毎回 new しないようにする
     // TODO: String to Message
     List<String> messages = new ArrayList<>();
     for (var bsky : bskys) {
