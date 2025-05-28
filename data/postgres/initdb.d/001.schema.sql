@@ -1,5 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+drop table if exists mastodon_service;
 drop table if exists bluesky_service;
 drop table if exists account;
 
@@ -16,6 +17,14 @@ create table bluesky_service (
   url text not null,
   handle text not null,
   app_password text not null,
-  unique (url, handle, app_password)
+  unique (url, handle)
+);
+
+create table mastodon_service (
+  id uuid primary key default uuid_generate_v4(),
+  account_id uuid not null references account (id),
+  url text not null,
+  access_token text not null,
+  unique (url, access_token)
 );
 
