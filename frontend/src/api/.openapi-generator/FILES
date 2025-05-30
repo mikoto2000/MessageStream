@@ -1,0 +1,16 @@
+.gitignore
+.npmignore
+api.ts
+base.ts
+common.ts
+configuration.ts
+docs/AddInstanceRequest.md
+docs/BlueskyControllerApi.md
+docs/BlueskyService.md
+docs/MastodonControllerApi.md
+docs/MastodonService.md
+docs/Message.md
+docs/SigninControllerApi.md
+docs/WelcomeControllerApi.md
+git_push.sh
+index.ts
