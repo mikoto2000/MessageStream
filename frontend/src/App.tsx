@@ -68,6 +68,17 @@ function App() {
         <p className="read-the-docs">
           Click on the Vite and React logos to learn more
         </p>
+        <button onClick={() => {
+          // セッションストレージ・ローカルストレージからユーザー情報を削除
+          auth.removeUser();
+
+          // OIDC 認可サーバーにセッションを破棄するように依頼して、
+          // 破棄したら post_logout_redirect_uri にリダイレクトする
+          auth.signoutRedirect({
+            id_token_hint: auth.user?.id_token,
+            post_logout_redirect_uri: "http://localhost:5173"
+          });
+        }}>Log out</button>
       </>
     )
   }
