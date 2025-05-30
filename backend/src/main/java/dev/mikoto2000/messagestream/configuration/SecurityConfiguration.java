@@ -29,6 +29,8 @@ public class SecurityConfiguration {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .authorizeHttpRequests(authorize -> authorize
+            // swagger-ui と swagger の yaml 定義関連は権限不要
+            .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/**").permitAll()
             .anyRequest().authenticated())
         // セッションをステートレスモードにする
         // ステートレスな Web API として実装するならステートはいらない
