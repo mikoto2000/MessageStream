@@ -23,6 +23,7 @@ import dev.mikoto2000.messagestream.bluesky.domain.Message;
 public class Bluesky {
 
   private final work.socialhub.kbsky.Bluesky bsky;
+  private final String url;
   private final BearerTokenAuthProvider auth;
 
   public Bluesky(
@@ -30,6 +31,7 @@ public class Bluesky {
       String identifier,
       String password) {
 
+    this.url = url;
     bsky = BlueskyFactory.INSTANCE.instance(url);
 
     ServerCreateSessionRequest request = new ServerCreateSessionRequest();
@@ -56,7 +58,8 @@ public class Bluesky {
         String text = feedPost.getText();
         Instant postedAt = Instant.parse(feedPost.getCreatedAt());
         String link = convertToHttpUrl(post.getUri());
-        returnValue.add(new Message("Bluesky", poster, text, postedAt, link));
+        String serviceName = String.format("Bluesky - %s", this.url);
+        returnValue.add(new Message(serviceName, poster, text, postedAt, link));
       }
     }
 

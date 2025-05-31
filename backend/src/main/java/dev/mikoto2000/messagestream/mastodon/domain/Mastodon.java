@@ -16,6 +16,7 @@ import org.mastodon4j.core.api.entities.Status;
 public class Mastodon {
 
   private MastodonApi api;
+  private final String url;
 
   /**
    * Constructor
@@ -23,6 +24,7 @@ public class Mastodon {
   public Mastodon(
       String url,
       String accessToken) {
+    this.url = url;
     api = MyMastodonClient.create(url, AccessToken.create(accessToken));
   }
 
@@ -35,8 +37,9 @@ public class Mastodon {
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
         String link = status.url().toString();
+        String serviceName = String.format("Mastodon - %s", this.url);
         returnValue.add(new Message(
-            "Mastodon",
+            serviceName,
             status.account().display_name(),
             text,
             status.created_at().toInstant(),
