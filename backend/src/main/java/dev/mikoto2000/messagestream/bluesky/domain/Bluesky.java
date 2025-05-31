@@ -12,8 +12,9 @@ import work.socialhub.kbsky.api.entity.com.atproto.server.ServerCreateSessionReq
 import work.socialhub.kbsky.api.entity.share.Response;
 import work.socialhub.kbsky.auth.BearerTokenAuthProvider;
 import work.socialhub.kbsky.model.app.bsky.feed.FeedDefsFeedViewPost;
+import work.socialhub.kbsky.model.app.bsky.feed.FeedDefsPostView;
 import work.socialhub.kbsky.model.app.bsky.feed.FeedPost;
-
+import work.socialhub.kbsky.model.share.RecordUnion;
 import dev.mikoto2000.messagestream.bluesky.domain.Message;
 
 /**
@@ -39,7 +40,6 @@ public class Bluesky {
     auth = new BearerTokenAuthProvider(accessJwt, null);
   }
 
-  // TODO: String to Message
   public List<Message> getHomeTimeline() {
 
     FeedResource feedApi = bsky.feed();
@@ -49,21 +49,38 @@ public class Bluesky {
 
     List<Message> returnValue = new ArrayList<>();
     for (FeedDefsFeedViewPost viewPost : posts) {
-      var post = viewPost.getPost();
-      var record = post.getRecord();
+      FeedDefsPostView post = viewPost.getPost();
+      RecordUnion record = post.getRecord();
       if (record instanceof FeedPost feedPost) {
-        // Author の取得
         String poster = post.getAuthor().getDisplayName();
         String text = feedPost.getText();
-
-        // CreatedAt の取得
-        String createdAtString = feedPost.getCreatedAt();
-        Instant postedAt = Instant.parse(createdAtString);
-
-        returnValue.add(new Message(poster, text, postedAt));
+        Instant postedAt = Instant.parse(feedPost.getCreatedAt());
+        String link = convertToHttpUrl(post.getUri());
+        returnValue.add(new Message("Bluesky", poster, text, postedAt, link));
       }
     }
 
     return returnValue;
+  }
+
+  private static String convertToHttpUrl(String atUri) {
+    if (atUri == null || !atUri.startsWith("at://")) {
+      return atUri;
+    }
+    String withoutScheme = atUri.substring("at://".length());
+    int slash = withoutScheme.indexOf('/');
+    if (slash < 0) {
+      return atUri;
+    }
+    String did = withoutScheme.substring(0, slash);
+    String rest = withoutScheme.substring(slash + 1);
+    String[] parts = rest.split("/", 2);
+    if (parts.length < 2) {
+      return atUri;
+    }
+    String collection = parts[0];
+    String rkey = parts[1];
+    String pathSegment = collection.endsWith(".post") ? "post" : collection;
+    return String.format("https://bsky.app/profile/%s/%s/%s", did, pathSegment, rkey);
   }
 }

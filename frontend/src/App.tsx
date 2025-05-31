@@ -24,12 +24,14 @@ function App() {
     if (auth?.user?.access_token) {
       const blueskyApi = new BlueskyControllerApi(createConfig(auth?.user?.access_token));
       const mastodonApi = new MastodonControllerApi(createConfig(auth?.user?.access_token));
+        console.log("kitayo1");
       (async () => {
+        console.log("kitayo2");
         const blueskyMessages = await blueskyApi.getHomeTimeline1();
         const mastodonMessages = await mastodonApi.getHomeTimeline();
         const mixedMessages = [...blueskyMessages.data, ...mastodonMessages.data].sort(postSortFunc);
         setMessages(mixedMessages);
-      })
+      })()
     }
   }, [auth]);
 

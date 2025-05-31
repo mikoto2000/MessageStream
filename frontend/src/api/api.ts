@@ -121,6 +121,12 @@ export interface Message {
      * @type {string}
      * @memberof Message
      */
+    'serviceName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
     'poster'?: string;
     /**
      * 
@@ -134,6 +140,12 @@ export interface Message {
      * @memberof Message
      */
     'postedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
+    'link'?: string;
 }
 
 /**

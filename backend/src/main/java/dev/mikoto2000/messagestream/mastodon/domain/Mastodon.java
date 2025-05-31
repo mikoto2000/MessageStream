@@ -33,11 +33,14 @@ public class Mastodon {
     List<Message> returnValue = new ArrayList<>();
     for (Status status : homeTimeline) {
       var text = Jsoup.parse(status.content()).text();
-      if (text != null && !text.equals("")) {
+      if (text != null && !text.isEmpty()) {
+        String link = status.url().toString();
         returnValue.add(new Message(
+            "Mastodon",
             status.account().display_name(),
             text,
-            status.created_at().toInstant()));
+            status.created_at().toInstant(),
+            link));
       }
     }
 
