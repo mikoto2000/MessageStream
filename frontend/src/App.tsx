@@ -2,14 +2,27 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from "react-oidc-context";
 
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BlueskyControllerApi, Configuration, MastodonControllerApi, type Message } from './api';
+
 import './App.css'
+import { createConfig } from './ApiConfig';
 
 function App() {
   const auth = useAuth();
 
-  const [count, setCount] = useState(0)
+  const [messages, setMessages] = useState<Message[]>([])
+
+  useEffect(() => {
+    if (auth?.user?.access_token) {
+      const blueskyApi = new BlueskyControllerApi(createConfig(auth?.user?.access_token));
+      const mastodonApi = new MastodonControllerApi(createConfig(auth?.user?.access_token));
+      (async () => {
+        const blueskyMessages = await blueskyApi.getHomeTimeline1();
+        const mastodonMessages = await mastodonApi.getHomeTimeline();
+        setMessages([...blueskyMessages.data, ...mastodonMessages.data]);
+      })()
+    }
+  }, [auth]);
 
   if (!auth.isAuthenticated) {
     return <button onClick={() => {
@@ -26,8 +39,12 @@ function App() {
     }}>Log in</button>
   }
 
-  if (auth.isLoading || auth.error) {
-      return <>認証中</>;
+  if (auth.error) {
+    return <div>Oops... {auth.error.message}</div>;
+  }
+
+  if (auth.isLoading) {
+    return <>認証中</>;
   }
 
   switch (auth.activeNavigator) {
@@ -41,33 +58,14 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  if (auth.error) {
-    return <div>Oops... {auth.error.message}</div>;
-  }
-
   if (auth.isAuthenticated) {
     return (
       <>
         <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
+          <pre>
+            {JSON.stringify(messages, null, 2)}
+          </pre>
         </div>
-        <h1>Vite + React</h1>
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
-          </p>
-        </div>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
         <button onClick={() => {
           // セッションストレージ・ローカルストレージからユーザー情報を削除
           auth.removeUser();
