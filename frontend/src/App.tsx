@@ -12,6 +12,14 @@ function App() {
 
   const [messages, setMessages] = useState<Message[]>([])
 
+  const postSortFunc = (a: Message, b: Message) => {
+    if (a.postedAt && b.postedAt) {
+      return Date.parse(b.postedAt) - Date.parse(a.postedAt)
+    } else {
+      return 0;
+    }
+  }
+
   useEffect(() => {
     if (auth?.user?.access_token) {
       const blueskyApi = new BlueskyControllerApi(createConfig(auth?.user?.access_token));
@@ -19,8 +27,9 @@ function App() {
       (async () => {
         const blueskyMessages = await blueskyApi.getHomeTimeline1();
         const mastodonMessages = await mastodonApi.getHomeTimeline();
-        setMessages([...blueskyMessages.data, ...mastodonMessages.data]);
-      })()
+        const mixedMessages = [...blueskyMessages.data, ...mastodonMessages.data].sort(postSortFunc);
+        setMessages(mixedMessages);
+      })
     }
   }, [auth]);
 
