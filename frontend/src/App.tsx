@@ -12,15 +12,19 @@ function App() {
 
   const [messages, setMessages] = useState<Message[]>([])
 
-  const postSortFunc = (a: Message, b: Message) => {
-    if (a.postedAt && b.postedAt) {
-      return Date.parse(b.postedAt) - Date.parse(a.postedAt)
-    } else {
-      return 0;
-    }
-  }
-
+  var initialized = false;
   useEffect(() => {
+    if (!initialized) {
+      initialized = true;
+      fetchMessages();
+      const interval = setInterval(fetchMessages, 5 * 60 * 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [auth]);
+
+  const fetchMessages = () => {
     if (auth?.user?.access_token) {
       const blueskyApi = new BlueskyControllerApi(createConfig(auth?.user?.access_token));
       const mastodonApi = new MastodonControllerApi(createConfig(auth?.user?.access_token));
@@ -31,7 +35,15 @@ function App() {
         setMessages(mixedMessages);
       })()
     }
-  }, [auth]);
+  }
+
+  const postSortFunc = (a: Message, b: Message) => {
+    if (a.postedAt && b.postedAt) {
+      return Date.parse(b.postedAt) - Date.parse(a.postedAt)
+    } else {
+      return 0;
+    }
+  }
 
   if (!auth.isAuthenticated) {
     return <button onClick={() => {
