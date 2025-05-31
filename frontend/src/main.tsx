@@ -6,6 +6,7 @@ import { AuthProvider } from 'react-oidc-context'
 import './index.css'
 import App from './App.tsx'
 
+// TODO: 外部定義化
 const oidcConfig = {
     authority:"http://keycloak:8080/realms/myrealm",
     client_id: "myrealm-id",

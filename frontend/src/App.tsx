@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useAuth } from "react-oidc-context";
 
-import { BlueskyControllerApi, Configuration, MastodonControllerApi, type Message } from './api';
+import { BlueskyControllerApi, MastodonControllerApi, type Message } from './api';
 
 import './App.css'
 import { createConfig } from './ApiConfig';
