@@ -1,49 +1,10 @@
-import { useEffect, useState } from 'react'
-
 import { useAuth } from "react-oidc-context";
 
-import { BlueskyControllerApi, MastodonControllerApi, type Message } from './api';
-
 import './App.css'
-import { createConfig } from './ApiConfig';
+import TimelinePage from "./pages/TimelinePage";
 
 function App() {
   const auth = useAuth();
-
-  const [messages, setMessages] = useState<Message[]>([])
-
-  var initialized = false;
-  useEffect(() => {
-    if (!initialized) {
-      initialized = true;
-      fetchMessages();
-      const interval = setInterval(fetchMessages, 5 * 60 * 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [auth]);
-
-  const fetchMessages = () => {
-    if (auth?.user?.access_token) {
-      const blueskyApi = new BlueskyControllerApi(createConfig(auth?.user?.access_token));
-      const mastodonApi = new MastodonControllerApi(createConfig(auth?.user?.access_token));
-      (async () => {
-        const blueskyMessages = await blueskyApi.getHomeTimeline1();
-        const mastodonMessages = await mastodonApi.getPublicTimeline();
-        const mixedMessages = [...blueskyMessages.data, ...mastodonMessages.data].sort(postSortFunc);
-        setMessages(mixedMessages);
-      })()
-    }
-  }
-
-  const postSortFunc = (a: Message, b: Message) => {
-    if (a.postedAt && b.postedAt) {
-      return Date.parse(b.postedAt) - Date.parse(a.postedAt)
-    } else {
-      return 0;
-    }
-  }
 
   if (!auth.isAuthenticated) {
     return <button onClick={() => {
@@ -82,19 +43,6 @@ function App() {
   if (auth.isAuthenticated) {
     return (
       <>
-        <h1>Welcome, {auth.user?.profile.name}!</h1>
-        <h2>Messages</h2>
-        <ul>
-          {messages.map((message, index) => (
-            <li key={index}>
-              <div>
-                <div><img src={message.iconUrl} style={{ width: "32px", height: "32px" }} /><strong>{message.poster}</strong> on {message.serviceName}</div>
-                <div>{message.text}</div>
-                <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
-              </div>
-            </li>
-          ))}
-        </ul>
         <button onClick={() => {
           // セッションストレージ・ローカルストレージからユーザー情報を削除
           auth.removeUser();
@@ -106,17 +54,10 @@ function App() {
             post_logout_redirect_uri: "http://localhost:5173"
           });
         }}>Log out</button>
-        <div>
-          {
-            import.meta.env.DEV
-            ?
-              <pre>
-                {JSON.stringify(messages, null, 2)}
-              </pre>
-            :
-              <></>
-          }
-        </div>
+        <TimelinePage
+          user={auth?.user?.profile?.name}
+          accessToken={auth.user?.access_token || ""}
+        />
       </>
     )
   }
