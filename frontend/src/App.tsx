@@ -83,9 +83,15 @@ function App() {
     return (
       <>
         <div>
-          <pre>
-            {JSON.stringify(messages, null, 2)}
-          </pre>
+          {
+            import.meta.env.DEV
+            ?
+              <pre>
+                {JSON.stringify(messages, null, 2)}
+              </pre>
+            :
+              <></>
+          }
         </div>
         <button onClick={() => {
           // セッションストレージ・ローカルストレージからユーザー情報を削除
