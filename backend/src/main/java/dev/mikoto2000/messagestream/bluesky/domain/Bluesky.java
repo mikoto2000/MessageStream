@@ -51,6 +51,10 @@ public class Bluesky {
 
     List<Message> returnValue = new ArrayList<>();
     for (FeedDefsFeedViewPost viewPost : posts) {
+      // リプライを除外
+      if (viewPost.getReply() != null) {
+        continue;
+      }
       FeedDefsPostView post = viewPost.getPost();
       RecordUnion record = post.getRecord();
       if (record instanceof FeedPost feedPost) {
