@@ -82,17 +82,19 @@ function App() {
   if (auth.isAuthenticated) {
     return (
       <>
-        <div>
-          {
-            import.meta.env.DEV
-            ?
-              <pre>
-                {JSON.stringify(messages, null, 2)}
-              </pre>
-            :
-              <></>
-          }
-        </div>
+        <h1>Welcome, {auth.user?.profile.name}!</h1>
+        <h2>Messages</h2>
+        <ul>
+          {messages.map((message, index) => (
+            <li key={index}>
+              <div>
+                <div><img src={message.iconUrl} style={{ width: "32px", height: "32px" }} /><strong>{message.poster}</strong> on {message.serviceName}</div>
+                <div>{message.text}</div>
+                <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
+              </div>
+            </li>
+          ))}
+        </ul>
         <button onClick={() => {
           // セッションストレージ・ローカルストレージからユーザー情報を削除
           auth.removeUser();
@@ -104,6 +106,17 @@ function App() {
             post_logout_redirect_uri: "http://localhost:5173"
           });
         }}>Log out</button>
+        <div>
+          {
+            import.meta.env.DEV
+            ?
+              <pre>
+                {JSON.stringify(messages, null, 2)}
+              </pre>
+            :
+              <></>
+          }
+        </div>
       </>
     )
   }
