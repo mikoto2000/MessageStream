@@ -78,4 +78,32 @@ public class MastodonManagementService {
 
     return messages;
   }
+
+  public List<Message> getPublicTimeline(
+      String iss,
+      String sub) {
+    log.info("Start getPublicTimeline");
+
+    Account account = accountRepository.findByIssuerAndSub(iss, sub);
+
+    log.info("account: {}", account);
+
+    List<MastodonService> mastodons = mastodonServiceRepository.findByAccountId(account.getId());
+
+    log.info("mastodon: {}", mastodons);
+
+    // TODO: インスタンスを毎回 new しないようにする
+    List<Message> messages = new ArrayList<>();
+    for (var mastodon : mastodons) {
+      var m = new Mastodon(
+          mastodon.getUrl(),
+          mastodon.getAccessToken());
+
+      messages.addAll(m.getPublicTimeline());
+    }
+
+    log.info("End getHomeTimeline");
+
+    return messages;
+  }
 }

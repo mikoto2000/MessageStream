@@ -50,4 +50,29 @@ public class Mastodon {
     return returnValue;
   }
 
+  public List<Message> getPublicTimeline() {
+    Timelines timelines = api.timelines();
+    List<Status> publicTimeline = timelines.pub();
+
+    List<Message> returnValue = new ArrayList<>();
+    for (Status status : publicTimeline) {
+      if (!status.account().url().startsWith(this.url)) {
+        continue;
+      }
+      var text = Jsoup.parse(status.content()).text();
+      if (text != null && !text.isEmpty()) {
+        String link = status.url().toString();
+        String serviceName = String.format("Mastodon - %s", this.url);
+        returnValue.add(new Message(
+            serviceName,
+            status.account().display_name(),
+            text,
+            status.created_at().toInstant(),
+            link));
+      }
+    }
+
+    return returnValue;
+  }
+
 }

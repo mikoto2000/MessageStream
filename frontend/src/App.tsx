@@ -30,7 +30,7 @@ function App() {
       const mastodonApi = new MastodonControllerApi(createConfig(auth?.user?.access_token));
       (async () => {
         const blueskyMessages = await blueskyApi.getHomeTimeline1();
-        const mastodonMessages = await mastodonApi.getHomeTimeline();
+        const mastodonMessages = await mastodonApi.getPublicTimeline();
         const mixedMessages = [...blueskyMessages.data, ...mastodonMessages.data].sort(postSortFunc);
         setMessages(mixedMessages);
       })()

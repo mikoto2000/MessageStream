@@ -55,5 +55,14 @@ public class MastodonController {
         jwt.getClaimAsString("iss"),
         jwt.getClaimAsString("sub"));
   }
+
+  @PostMapping("mastodon/pub")
+  public List<Message> getPublicTimeline(
+      @AuthenticationPrincipal Jwt jwt) {
+
+    return mastodonService.getPublicTimeline(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"));
+  }
 }
 
