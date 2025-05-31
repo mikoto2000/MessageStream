@@ -38,9 +38,11 @@ public class Mastodon {
       if (text != null && !text.isEmpty()) {
         String link = status.url().toString();
         String serviceName = String.format("Mastodon - %s", this.url);
+        String iconUrl = status.account().avatar();
         returnValue.add(new Message(
             serviceName,
             status.account().display_name(),
+            iconUrl,
             text,
             status.created_at().toInstant(),
             link));
@@ -63,9 +65,11 @@ public class Mastodon {
       if (text != null && !text.isEmpty()) {
         String link = status.url().toString();
         String serviceName = String.format("Mastodon - %s", this.url);
+        String iconUrl = status.account().avatar();
         returnValue.add(new Message(
             serviceName,
             status.account().display_name(),
+            iconUrl,
             text,
             status.created_at().toInstant(),
             link));

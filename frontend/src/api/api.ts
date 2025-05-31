@@ -133,6 +133,12 @@ export interface Message {
      * @type {string}
      * @memberof Message
      */
+    'iconUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Message
+     */
     'text'?: string;
     /**
      * 

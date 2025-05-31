@@ -59,11 +59,12 @@ public class Bluesky {
       RecordUnion record = post.getRecord();
       if (record instanceof FeedPost feedPost) {
         String poster = post.getAuthor().getDisplayName();
+        String iconUrl = post.getAuthor().getAvatar();
         String text = feedPost.getText();
         Instant postedAt = Instant.parse(feedPost.getCreatedAt());
         String link = convertToHttpUrl(post.getUri());
         String serviceName = String.format("Bluesky - %s", this.url);
-        returnValue.add(new Message(serviceName, poster, text, postedAt, link));
+        returnValue.add(new Message(serviceName, poster, iconUrl, text, postedAt, link));
       }
     }
 

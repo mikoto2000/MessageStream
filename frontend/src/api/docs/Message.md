@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **serviceName** | **string** |  | [optional] [default to undefined]
 **poster** | **string** |  | [optional] [default to undefined]
+**iconUrl** | **string** |  | [optional] [default to undefined]
 **text** | **string** |  | [optional] [default to undefined]
 **postedAt** | **string** |  | [optional] [default to undefined]
 **link** | **string** |  | [optional] [default to undefined]
@@ -19,6 +20,7 @@ import { Message } from './api';
 const instance: Message = {
     serviceName,
     poster,
+    iconUrl,
     text,
     postedAt,
     link,
