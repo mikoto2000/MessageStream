@@ -19,6 +19,8 @@ import dev.mikoto2000.messagestream.signin.entity.Account;
 import dev.mikoto2000.messagestream.signin.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * MastodonManagementService
@@ -51,6 +53,18 @@ public class MastodonManagementService {
     var account = accountRepository.findByIssuerAndSub(iss, sub);
 
     log.info("target account: {}", account);
+
+    // Validate connection to the Mastodon instance with provided credentials
+    try {
+      log.debug("Testing connection to Mastodon instance: url={}", instanceUrl);
+      new Mastodon(instanceUrl, accessToken).getHomeTimeline();
+    } catch (Exception e) {
+      log.error("Failed to connect to Mastodon instance url={}", instanceUrl, e);
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          "Failed to connect to Mastodon instance: " + e.getMessage(),
+          e);
+    }
 
     mastodonServiceRepository.save(new MastodonService(
         null,
