@@ -40,6 +40,7 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
               type="text"
               value={instanceUrl}
               onChange={(e) => setInstanceUrl(e.target.value)}
+              placeholder="https://social.mikutter.hachune.net"
               required
             />
           </label>
@@ -58,6 +59,15 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
         <button type="submit">登録</button>
       </form>
       {statusMessage && <p>{statusMessage}</p>}
+      <p>
+        Mastodon のアクセストークンは以下の手順で取得してください:
+      </p>
+      <ol>
+        <li>お使いの Mastodon インスタンスにログイン</li>
+        <li>「設定」→「開発」→「新しいアプリケーションを作成」を選択</li>
+        <li>アプリ名・リダイレクト URI（任意）・必要な権限 (Read / Write など) を設定してアプリを作成</li>
+        <li>表示されたアクセストークンをコピーし、以下のアクセストークン欄に貼り付ける</li>
+      </ol>
     </>
   );
 };
