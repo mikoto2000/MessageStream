@@ -36,6 +36,12 @@ public class Mastodon {
     for (Status status : homeTimeline) {
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
+        List<String> imageUrls = new ArrayList<>();
+        for (var media : status.media_attachments()) {
+          if ("image".equals(media.type())) {
+            imageUrls.add(media.previewUrl());
+          }
+        }
         String link = status.url().toString();
         String serviceName = String.format("Mastodon - %s", this.url);
         String iconUrl = status.account().avatar();
@@ -45,7 +51,8 @@ public class Mastodon {
             iconUrl,
             text,
             status.created_at().toInstant(),
-            link));
+            link,
+            imageUrls));
       }
     }
 
@@ -63,6 +70,12 @@ public class Mastodon {
       }
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
+        List<String> imageUrls = new ArrayList<>();
+        for (var media : status.media_attachments()) {
+          if ("image".equals(media.type())) {
+            imageUrls.add(media.previewUrl());
+          }
+        }
         String link = status.url().toString();
         String serviceName = String.format("Mastodon - %s", this.url);
         String iconUrl = status.account().avatar();
@@ -72,7 +85,8 @@ public class Mastodon {
             iconUrl,
             text,
             status.created_at().toInstant(),
-            link));
+            link,
+            imageUrls));
       }
     }
 

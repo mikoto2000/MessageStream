@@ -16,6 +16,9 @@ import work.socialhub.kbsky.model.app.bsky.feed.FeedDefsPostView;
 import work.socialhub.kbsky.model.app.bsky.feed.FeedPost;
 import work.socialhub.kbsky.model.share.RecordUnion;
 import dev.mikoto2000.messagestream.bluesky.domain.Message;
+import work.socialhub.kbsky.model.app.bsky.embed.EmbedViewUnion;
+import work.socialhub.kbsky.model.app.bsky.embed.EmbedImagesView;
+import work.socialhub.kbsky.model.app.bsky.embed.EmbedImagesViewImage;
 
 /**
  * Bluesky
@@ -63,8 +66,15 @@ public class Bluesky {
         String text = feedPost.getText();
         Instant postedAt = Instant.parse(feedPost.getCreatedAt());
         String link = convertToHttpUrl(post.getUri());
+        List<String> imageUrls = new ArrayList<>();
+        EmbedViewUnion embed = post.getEmbed();
+        if (embed instanceof EmbedImagesView images) {
+          for (EmbedImagesViewImage img : images.getImages()) {
+            imageUrls.add(img.getThumb());
+          }
+        }
         String serviceName = String.format("Bluesky - %s", this.url);
-        returnValue.add(new Message(serviceName, poster, iconUrl, text, postedAt, link));
+        returnValue.add(new Message(serviceName, poster, iconUrl, text, postedAt, link, imageUrls));
       }
     }
 
