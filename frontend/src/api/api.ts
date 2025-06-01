@@ -234,6 +234,39 @@ export const BlueskyControllerApiAxiosParamCreator = function (configuration?: C
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInstance1: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteInstance1', 'id', id)
+            const localVarPath = `/bluesky/instances/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -314,6 +347,18 @@ export const BlueskyControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteInstance1(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInstance1(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['BlueskyControllerApi.deleteInstance1']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -355,6 +400,15 @@ export const BlueskyControllerApiFactory = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {BlueskyControllerApiDeleteInstance1Request} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInstance1(requestParameters: BlueskyControllerApiDeleteInstance1Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteInstance1(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -387,6 +441,20 @@ export interface BlueskyControllerApiAddInstance1Request {
 }
 
 /**
+ * Request parameters for deleteInstance1 operation in BlueskyControllerApi.
+ * @export
+ * @interface BlueskyControllerApiDeleteInstance1Request
+ */
+export interface BlueskyControllerApiDeleteInstance1Request {
+    /**
+     * 
+     * @type {string}
+     * @memberof BlueskyControllerApiDeleteInstance1
+     */
+    readonly id: string
+}
+
+/**
  * BlueskyControllerApi - object-oriented interface
  * @export
  * @class BlueskyControllerApi
@@ -402,6 +470,17 @@ export class BlueskyControllerApi extends BaseAPI {
      */
     public addInstance1(requestParameters: BlueskyControllerApiAddInstance1Request, options?: RawAxiosRequestConfig) {
         return BlueskyControllerApiFp(this.configuration).addInstance1(requestParameters.addBlueskyInstanceRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {BlueskyControllerApiDeleteInstance1Request} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BlueskyControllerApi
+     */
+    public deleteInstance1(requestParameters: BlueskyControllerApiDeleteInstance1Request, options?: RawAxiosRequestConfig) {
+        return BlueskyControllerApiFp(this.configuration).deleteInstance1(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -462,6 +541,39 @@ export const MastodonControllerApiAxiosParamCreator = function (configuration?: 
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(addMastodonInstanceRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInstance: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteInstance', 'id', id)
+            const localVarPath = `/mastodon/instances/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -579,6 +691,18 @@ export const MastodonControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteInstance(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteInstance(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MastodonControllerApi.deleteInstance']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -631,6 +755,15 @@ export const MastodonControllerApiFactory = function (configuration?: Configurat
         },
         /**
          * 
+         * @param {MastodonControllerApiDeleteInstanceRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteInstance(requestParameters: MastodonControllerApiDeleteInstanceRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.deleteInstance(requestParameters.id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -671,6 +804,20 @@ export interface MastodonControllerApiAddInstanceRequest {
 }
 
 /**
+ * Request parameters for deleteInstance operation in MastodonControllerApi.
+ * @export
+ * @interface MastodonControllerApiDeleteInstanceRequest
+ */
+export interface MastodonControllerApiDeleteInstanceRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MastodonControllerApiDeleteInstance
+     */
+    readonly id: string
+}
+
+/**
  * MastodonControllerApi - object-oriented interface
  * @export
  * @class MastodonControllerApi
@@ -686,6 +833,17 @@ export class MastodonControllerApi extends BaseAPI {
      */
     public addInstance(requestParameters: MastodonControllerApiAddInstanceRequest, options?: RawAxiosRequestConfig) {
         return MastodonControllerApiFp(this.configuration).addInstance(requestParameters.addMastodonInstanceRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {MastodonControllerApiDeleteInstanceRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MastodonControllerApi
+     */
+    public deleteInstance(requestParameters: MastodonControllerApiDeleteInstanceRequest, options?: RawAxiosRequestConfig) {
+        return MastodonControllerApiFp(this.configuration).deleteInstance(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
