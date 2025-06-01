@@ -19,6 +19,8 @@ import dev.mikoto2000.messagestream.signin.entity.Account;
 import dev.mikoto2000.messagestream.signin.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * BlueskyService
@@ -47,10 +49,20 @@ public class BlueskyManagementService {
       String password) {
 
     log.info("Start addInstance by: ({}, {})", iss, sub);
-
     var account = accountRepository.findByIssuerAndSub(iss, sub);
-
     log.info("target account: {}", account);
+
+    // Validate connection to the Bluesky instance with provided credentials
+    try {
+      log.debug("Testing connection to Bluesky instance: url={}, handle={}", instanceUrl, handle);
+      new Bluesky(instanceUrl, handle, password);
+    } catch (Exception e) {
+      log.error("Failed to connect to Bluesky instance url={} with handle={}", instanceUrl, handle, e);
+      throw new ResponseStatusException(
+          HttpStatus.BAD_REQUEST,
+          "Failed to connect to Bluesky instance: " + e.getMessage(),
+          e);
+    }
 
     blueskyServiceRepository.save(new BlueskyService(
         null,
