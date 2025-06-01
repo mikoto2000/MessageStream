@@ -40,7 +40,13 @@ export interface AddInstanceRequest {
      * @type {string}
      * @memberof AddInstanceRequest
      */
-    'accessToken'?: string;
+    'handle'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddInstanceRequest
+     */
+    'password'?: string;
 }
 /**
  * 

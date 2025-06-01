@@ -1,7 +1,9 @@
 import { useAuth } from "react-oidc-context";
+import { Routes, Route, Link } from "react-router-dom";
 
 import './App.css'
 import TimelinePage from "./pages/TimelinePage";
+import BlueskyRegisterPage from "./pages/BlueskyRegisterPage";
 
 function App() {
   const auth = useAuth();
@@ -44,28 +46,35 @@ function App() {
   }
 
   if (auth.isAuthenticated) {
+    const accessToken = auth.user?.access_token || "";
     return (
       <>
-        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h1>Message Stream</h1>
-          <button onClick={() => {
-            // セッションストレージ・ローカルストレージからユーザー情報を削除
-            auth.removeUser();
+          <nav>
+            <Link to="/">Timeline</Link>{" | "}
+            <Link to="/bluesky">Bluesky インスタンス登録</Link>{" | "}
+            <button onClick={() => {
+              // セッションストレージ・ローカルストレージからユーザー情報を削除
+              auth.removeUser();
 
-            // OIDC 認可サーバーにセッションを破棄するように依頼して、
-            // 破棄したら post_logout_redirect_uri にリダイレクトする
-            auth.signoutRedirect({
-              id_token_hint: auth.user?.id_token,
-              post_logout_redirect_uri: "http://localhost:5173"
-            });
-          }}>Log out</button>
-        </div>
-        <TimelinePage
-          user={auth?.user?.profile?.name}
-          accessToken={auth.user?.access_token || ""}
-        />
+              // OIDC 認可サーバーにセッションを破棄するように依頼して、
+              // 破棄したら post_logout_redirect_uri にリダイレクトする
+              auth.signoutRedirect({
+                id_token_hint: auth.user?.id_token,
+                post_logout_redirect_uri: window.location.origin
+              });
+            }}>Log out</button>
+          </nav>
+        </header>
+        <main style={{ padding: "1rem" }}>
+          <Routes>
+            <Route path="/" element={<TimelinePage user={auth.user?.profile?.name} accessToken={accessToken} />} />
+            <Route path="/bluesky" element={<BlueskyRegisterPage accessToken={accessToken} />} />
+          </Routes>
+        </main>
       </>
-    )
+    );
   }
 }
 

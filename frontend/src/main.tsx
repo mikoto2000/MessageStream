@@ -5,6 +5,7 @@ import { AuthProvider } from 'react-oidc-context'
 
 import './index.css'
 import App from './App.tsx'
+import { BrowserRouter } from 'react-router-dom'
 
 const oidcConfig = {
     authority: import.meta.env.VITE_OIDC_AUTHORITY,
@@ -33,7 +34,9 @@ const oidcConfig = {
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider {...oidcConfig}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </AuthProvider>
   </StrictMode>,
 )
