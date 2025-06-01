@@ -158,6 +158,12 @@ export interface Message {
      * @memberof Message
      */
     'thumbnailUrls'?: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Message
+     */
+    'imageUrls'?: Array<string>;
 }
 
 /**

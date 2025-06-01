@@ -59,9 +59,9 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
               </div>
               <div>
                 {
-                  message.thumbnailUrls ?
+                  message.thumbnailUrls && message.imageUrls ?
                     message.thumbnailUrls.map((thumbnailUrl, imageIndex) => (
-                      <img key={imageIndex} src={thumbnailUrl} style={{ width: "64px", height: "64px" }} />
+                      <a href={message.imageUrls[imageIndex]} target="_brank"><img key={imageIndex} src={thumbnailUrl} style={{ width: "64px", height: "64px" }} /></a>
                     ))
                   : <></>
                 }
