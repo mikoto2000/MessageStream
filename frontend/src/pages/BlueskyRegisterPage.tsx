@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BlueskyControllerApi } from '../api';
+import type { BlueskyService } from '../api/api';
 import { createConfig } from '../ApiConfig';
 
 type BlueskyRegisterPageProps = {
@@ -11,6 +12,7 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
   const [handle, setHandle] = useState('');
   const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [instances, setInstances] = useState<BlueskyService[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +23,11 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
       setInstanceUrl('');
       setHandle('');
       setPassword('');
+      api.getInstances1().then(response => {
+        setInstances(response.data);
+      }).catch(error => {
+        console.error('Failed to fetch Bluesky instances', error);
+      });
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof Error) {
@@ -30,6 +37,15 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
       }
     }
   };
+
+  useEffect(() => {
+    const api = new BlueskyControllerApi(createConfig(accessToken));
+    api.getInstances1().then(response => {
+      setInstances(response.data);
+    }).catch(error => {
+      console.error('Failed to fetch Bluesky instances', error);
+    });
+  }, [accessToken]);
 
   return (
     <>
@@ -82,6 +98,18 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
         <li>「新規アプリケーションパスワードを作成」を選択し、アプリ名を入力して作成</li>
         <li>表示されたパスワードをコピーし、以下のパスワード欄に貼り付ける</li>
       </ol>
+      <h3>登録済みインスタンス一覧</h3>
+      {instances.length === 0 ? (
+        <p>登録されたインスタンスはありません。</p>
+      ) : (
+        <ul>
+          {instances.map(inst => (
+            <li key={inst.id}>
+              {inst.url} ({inst.handle})
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 };
