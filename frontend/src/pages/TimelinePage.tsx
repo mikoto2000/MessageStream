@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { BlueskyControllerApi, MastodonControllerApi, type Message } from '../api';
 
 import { createConfig } from '../ApiConfig';
+import { linkifyText } from '../utils/linkify';
 
 type TimelinePageProps = {
   user: string | undefined;
@@ -54,7 +55,9 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div>
                 <div><img src={message.iconUrl} style={{ width: "32px", height: "32px" }} /><strong>{message.poster}</strong> on {message.serviceName}</div>
-                <div>{message.text}</div>
+                <div>
+                  {message.text ? linkifyText(message.text) : null}
+                </div>
                 <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
               </div>
               <div>
