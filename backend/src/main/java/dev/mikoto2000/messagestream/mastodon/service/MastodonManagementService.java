@@ -144,4 +144,23 @@ public class MastodonManagementService {
 
     return messages;
   }
+
+  public void deleteInstance(
+      String iss,
+      String sub,
+      UUID instanceId) {
+    log.info("Deleting Mastodon instance: id={}", instanceId);
+    var account = accountRepository.findByIssuerAndSub(iss, sub);
+    var service = mastodonServiceRepository.findById(instanceId)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Mastodon instance not found: " + instanceId));
+    if (!service.getAccountId().equals(account.getId())) {
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN,
+          "Cannot delete Mastodon instance that does not belong to user: " + instanceId);
+    }
+    mastodonServiceRepository.delete(service);
+    mastodonCache.invalidate(instanceId);
+  }
 }

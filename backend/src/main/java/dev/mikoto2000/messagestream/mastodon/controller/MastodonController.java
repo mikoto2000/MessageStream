@@ -6,8 +6,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.UUID;
 
 import dev.mikoto2000.messagestream.mastodon.domain.Message;
 import dev.mikoto2000.messagestream.mastodon.entity.MastodonService;
@@ -63,6 +66,17 @@ public class MastodonController {
     return mastodonService.getPublicTimeline(
         jwt.getClaimAsString("iss"),
         jwt.getClaimAsString("sub"));
+  }
+
+  @DeleteMapping("mastodon/instances/{id}")
+  public void deleteInstance(
+      @AuthenticationPrincipal Jwt jwt,
+      @PathVariable("id") UUID id) {
+
+    mastodonService.deleteInstance(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"),
+        id);
   }
 }
 
