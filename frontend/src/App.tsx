@@ -50,7 +50,7 @@ function App() {
     const accessToken = auth.user?.access_token || "";
     return (
       <>
-        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100vw" }}>
           <h1>Message Stream</h1>
           <nav>
             <Link to="/">Timeline</Link>{" | "}
