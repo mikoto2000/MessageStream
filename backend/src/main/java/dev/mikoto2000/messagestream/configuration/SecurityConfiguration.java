@@ -1,9 +1,11 @@
 package dev.mikoto2000.messagestream.configuration;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,12 +16,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import dev.mikoto2000.messagestream.configuration.CorsProperties;
 
 /**
  * SecurityConfiguration
  */
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(CorsProperties.class)
 public class SecurityConfiguration {
 
   /**
@@ -46,6 +50,12 @@ public class SecurityConfiguration {
     return http.build();
   }
 
+  private final CorsProperties corsProperties;
+
+  public SecurityConfiguration(CorsProperties corsProperties) {
+    this.corsProperties = Objects.requireNonNull(corsProperties);
+  }
+
   /**
    * CORS の設定
    */
@@ -53,28 +63,22 @@ public class SecurityConfiguration {
   public CorsConfigurationSource corsConfigurationSource() {
     var configuration = new CorsConfiguration();
 
-    // Access-Control-Allow-Origin の設定
-
-    // setAllowedOriginPatterns はワイルドカードを使えないので注意
-    // configuration.setAllowedOrigins(List.of("http://host.docker.internal:3000"));
-
-    // ワイルドカードを使いたい場合は setAllowedOriginPatterns を使用
-    configuration.setAllowedOriginPatterns(List.of("*"));
-
-    // Access-Control-Allow-Methods の設定
-    configuration.setAllowedMethods(List.of("*"));
-
-    // Access-Control-Allow-Headers の設定
-    configuration.setAllowedHeaders(List.of("*"));
-
-    // Access-Control-Allow-Credentials の設定
-    configuration.setAllowCredentials(true);
+    if (!corsProperties.getAllowedOrigins().isEmpty()) {
+      configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+    }
+    if (!corsProperties.getAllowedOriginPatterns().isEmpty()) {
+      configuration.setAllowedOriginPatterns(corsProperties.getAllowedOriginPatterns());
+    }
+    if (!corsProperties.getAllowedMethods().isEmpty()) {
+      configuration.setAllowedMethods(corsProperties.getAllowedMethods());
+    }
+    if (!corsProperties.getAllowedHeaders().isEmpty()) {
+      configuration.setAllowedHeaders(corsProperties.getAllowedHeaders());
+    }
+    configuration.setAllowCredentials(corsProperties.getAllowCredentials());
 
     var source = new UrlBasedCorsConfigurationSource();
-
-    // COSR設定を行う範囲のパスを指定する。この例では全てのパスに対して設定が有効になる
-    source.registerCorsConfiguration("/**", configuration);
-
+    source.registerCorsConfiguration(corsProperties.getMappingPath(), configuration);
     return source;
   }
 

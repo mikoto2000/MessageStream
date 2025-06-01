@@ -24,3 +24,15 @@ logging:
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
 
+messagestream:
+  cors:
+    # CORS 設定を application.yaml で外部化
+    allowed-origin-patterns:
+      - "*"
+    allowed-methods:
+      - "*"
+    allowed-headers:
+      - "*"
+    allow-credentials: true
+    mapping-path: "/**"
+
