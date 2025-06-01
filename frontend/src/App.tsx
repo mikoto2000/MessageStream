@@ -2,9 +2,13 @@ import { useAuth } from "react-oidc-context";
 import { Routes, Route, Link } from "react-router-dom";
 
 import './App.css'
+
+import { createConfig } from './ApiConfig';
+
 import TimelinePage from "./pages/TimelinePage";
 import BlueskyRegisterPage from "./pages/BlueskyRegisterPage";
 import MastodonRegisterPage from "./pages/MastodonRegisterPage";
+import { SigninControllerApi } from "./api";
 
 function App() {
   const auth = useAuth();
@@ -47,6 +51,15 @@ function App() {
   }
 
   if (auth.isAuthenticated) {
+    const config = createConfig(auth.user?.access_token || "");
+    const signinApi = new SigninControllerApi(config)
+    signinApi.exists()
+      .then((result) => {
+        if (!result.data) {
+          signinApi.register();
+        }
+      });
+
     const accessToken = auth.user?.access_token || "";
     return (
       <>

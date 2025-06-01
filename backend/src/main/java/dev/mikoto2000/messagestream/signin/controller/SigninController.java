@@ -17,11 +17,20 @@ public class SigninController {
 
   private final SigninService signinService;
 
-  @PostMapping("/register")
+  @PostMapping("signin/register")
   public void register(
       @AuthenticationPrincipal Jwt jwt) {
 
     signinService.register(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"));
+  }
+
+  @PostMapping("signin/exists")
+  public boolean exists(
+      @AuthenticationPrincipal Jwt jwt) {
+
+    return signinService.exists(
         jwt.getClaimAsString("iss"),
         jwt.getClaimAsString("sub"));
   }

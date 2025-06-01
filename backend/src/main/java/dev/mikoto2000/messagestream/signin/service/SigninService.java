@@ -25,5 +25,9 @@ public class SigninService {
 
     log.info("Create new Account({}", newAccount);
   }
-}
 
+  public boolean exists(String iss, String sub) {
+    Account account = accountRepository.findByIssuerAndSub(iss, sub);
+    return account != null;
+  }
+}
