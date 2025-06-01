@@ -13,6 +13,17 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [instances, setInstances] = useState<MastodonService[]>([]);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const api = new MastodonControllerApi(createConfig(accessToken));
+      await api.deleteInstance({ id });
+      const response = await api.getInstances();
+      setInstances(response.data);
+    } catch (error) {
+      console.error('Failed to delete Mastodon instance', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const api = new MastodonControllerApi(createConfig(accessToken));
@@ -86,7 +97,10 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
       ) : (
         <ul>
           {instances.map(inst => (
-            <li key={inst.id}>{inst.url}</li>
+            <li key={inst.id}>
+              {inst.url}{' '}
+              <button onClick={() => inst.id && handleDelete(inst.id)}>削除</button>
+            </li>
           ))}
         </ul>
       )}
