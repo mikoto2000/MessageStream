@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MastodonControllerApi } from '../api';
+import type { MastodonService } from '../api/api';
 import { createConfig } from '../ApiConfig';
 
 type MastodonRegisterPageProps = {
@@ -10,6 +11,7 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
   const [instanceUrl, setInstanceUrl] = useState('');
   const [mastodonAccessToken, setMastodonAccessToken] = useState('');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [instances, setInstances] = useState<MastodonService[]>([]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +21,9 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
       setStatusMessage('登録に成功しました。');
       setInstanceUrl('');
       setMastodonAccessToken('');
+      api.getInstances()
+        .then(response => setInstances(response.data))
+        .catch(error => console.error('Failed to fetch Mastodon instances', error));
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof Error) {
@@ -28,6 +33,13 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
       }
     }
   };
+
+  useEffect(() => {
+    const api = new MastodonControllerApi(createConfig(accessToken));
+    api.getInstances()
+      .then(response => setInstances(response.data))
+      .catch(error => console.error('Failed to fetch Mastodon instances', error));
+  }, [accessToken]);
 
   return (
     <>
@@ -68,6 +80,16 @@ export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ acce
         <li>アプリ名・リダイレクト URI（任意）・必要な権限 (Read / Write など) を設定してアプリを作成</li>
         <li>表示されたアクセストークンをコピーし、以下のアクセストークン欄に貼り付ける</li>
       </ol>
+      <h3>登録済みインスタンス一覧</h3>
+      {instances.length === 0 ? (
+        <p>登録されたインスタンスはありません。</p>
+      ) : (
+        <ul>
+          {instances.map(inst => (
+            <li key={inst.id}>{inst.url}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 };
