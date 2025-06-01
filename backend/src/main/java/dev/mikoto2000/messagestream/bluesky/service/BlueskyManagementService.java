@@ -108,4 +108,23 @@ public class BlueskyManagementService {
 
     return messages;
   }
+
+  public void deleteInstance(
+      String iss,
+      String sub,
+      UUID instanceId) {
+    log.info("Deleting Bluesky instance: id={}", instanceId);
+    var account = accountRepository.findByIssuerAndSub(iss, sub);
+    var service = blueskyServiceRepository.findById(instanceId)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Bluesky instance not found: " + instanceId));
+    if (!service.getAccountId().equals(account.getId())) {
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN,
+          "Cannot delete Bluesky instance that does not belong to user: " + instanceId);
+    }
+    blueskyServiceRepository.delete(service);
+    bskyCache.invalidate(instanceId);
+  }
 }
