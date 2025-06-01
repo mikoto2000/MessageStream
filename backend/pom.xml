@@ -116,6 +116,14 @@
     <artifactId>jsoup</artifactId>
     <version>1.20.1</version>
   </dependency>
+
+  <!-- Guava cache for Bluesky instance eviction -->
+  <dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>32.1.2-jre</version>
+  </dependency>
+
 </dependencies>
 <build>
   <plugins>

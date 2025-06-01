@@ -2,6 +2,12 @@ package dev.mikoto2000.messagestream.bluesky.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 
 import org.springframework.stereotype.Service;
 
@@ -24,6 +30,10 @@ public class BlueskyManagementService {
 
   private final AccountRepository accountRepository;
   private final BlueskyServiceRepository blueskyServiceRepository;
+  private final Cache<UUID, Bluesky> bskyCache =
+      CacheBuilder.newBuilder()
+          .expireAfterAccess(10, TimeUnit.MINUTES)
+          .build();
 
   public List<BlueskyService> getInstances() {
     return blueskyServiceRepository.findAll();
@@ -63,15 +73,23 @@ public class BlueskyManagementService {
 
     log.info("bskys: {}", bskys);
 
-    // TODO: インスタンスを毎回 new しないようにする
     List<Message> messages = new ArrayList<>();
-    for (var bsky : bskys) {
-      var b = new Bluesky(
-          bsky.getUrl(),
-          bsky.getHandle(),
-          bsky.getAppPassword());
-
-      messages.addAll(b.getHomeTimeline());
+    for (var service : bskys) {
+      Bluesky client;
+      try {
+        client = bskyCache.get(
+            service.getId(),
+            () -> {
+              log.info("Creating new Bluesky client for service: {}", service.getId());
+              return new Bluesky(
+                service.getUrl(),
+                service.getHandle(),
+                service.getAppPassword());
+            });
+      } catch (ExecutionException e) {
+        throw new RuntimeException("Failed to load Bluesky client", e);
+      }
+      messages.addAll(client.getHomeTimeline());
     }
 
     log.info("End getHomeTimeline");
