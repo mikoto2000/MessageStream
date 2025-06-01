@@ -14,6 +14,17 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [instances, setInstances] = useState<BlueskyService[]>([]);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const api = new BlueskyControllerApi(createConfig(accessToken));
+      await api.deleteInstance1({ id });
+      const response = await api.getInstances1();
+      setInstances(response.data);
+    } catch (error) {
+      console.error('Failed to delete Bluesky instance', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const api = new BlueskyControllerApi(createConfig(accessToken));
@@ -105,7 +116,8 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
         <ul>
           {instances.map(inst => (
             <li key={inst.id}>
-              {inst.url} ({inst.handle})
+              {inst.url} ({inst.handle}){' '}
+              <button onClick={() => inst.id && handleDelete(inst.id)}>削除</button>
             </li>
           ))}
         </ul>
