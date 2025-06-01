@@ -8,7 +8,10 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * Message class holding service name, poster, icon URL, text, post time, link, and attached thumbnail image URLs.
+ * Message class holding service name, poster, icon URL, text, post time, link,
+ * and attached thumbnail and full-size image URLs.
+ * <p>
+ * The nth element in {@code thumbnailUrls} corresponds to the nth element in {@code imageUrls}.
  */
 @Getter
 @ToString
@@ -21,5 +24,6 @@ public class Message {
   private final Instant postedAt;
   private final String link;
   private final List<String> thumbnailUrls;
+  private final List<String> imageUrls;
 }
 
