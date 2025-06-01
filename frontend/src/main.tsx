@@ -6,12 +6,11 @@ import { AuthProvider } from 'react-oidc-context'
 import './index.css'
 import App from './App.tsx'
 
-// TODO: 外部定義化
 const oidcConfig = {
-    authority:"http://keycloak:8080/realms/myrealm",
-    client_id: "myrealm-id",
-    client_secret: "myrealm-secret",
-    redirect_uri: "http://localhost:5173",
+    authority: import.meta.env.VITE_OIDC_AUTHORITY,
+    client_id: import.meta.env.VITE_OIDC_CLIENT_ID,
+    client_secret: import.meta.env.VITE_OIDC_CLIENT_SECRET,
+    redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI,
     onSigninCallback: () => {
         // セッションストレージから元居たパスを取得セッションストレージ内のデータは削除
         const redirectLocation = sessionStorage.getItem('path');

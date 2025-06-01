@@ -46,6 +46,18 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
       return 0;
     }
   }
+
+  const createImageParts = (message: Message) => {
+    if (message.thumbnailUrls && message.imageUrls) {
+      const image = message.imageUrls;
+      return message.thumbnailUrls.map((thumbnailUrl, imageIndex) => (
+        <a href={image[imageIndex]} target="_brank"><img key={imageIndex} src={thumbnailUrl} style={{ width: "64px", height: "64px" }} /></a>
+      ));
+    } else {
+      <></>
+    };
+  }
+
   return (
     <>
       <h2>{user} timeline</h2>
@@ -61,13 +73,7 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
                 <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
               </div>
               <div>
-                {
-                  message.thumbnailUrls && message.imageUrls ?
-                    message.thumbnailUrls.map((thumbnailUrl, imageIndex) => (
-                      <a href={message.imageUrls[imageIndex]} target="_brank"><img key={imageIndex} src={thumbnailUrl} style={{ width: "64px", height: "64px" }} /></a>
-                    ))
-                  : <></>
-                }
+                {createImageParts(message)}
               </div>
             </div>
           </li>

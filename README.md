@@ -29,7 +29,21 @@ cd backend
 
 ### フロントエンド
 
-T.B.D.
+```bash
+cd frontend
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+フロントエンドは Vite を使った React アプリケーションです。.env.example を参照して `.env.local` を作成し、OIDC 設定用の環境変数を設定してください:
+
+```dotenv
+VITE_OIDC_AUTHORITY=
+VITE_OIDC_CLIENT_ID=
+VITE_OIDC_CLIENT_SECRET=
+VITE_OIDC_REDIRECT_URI=
+```
 
 
 ## ライセンス

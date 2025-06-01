@@ -31,6 +31,17 @@ export default tseslint.config({
 })
 ```
 
+## 環境変数
+
+OIDC 設定を外部定義化するため、プロジェクトルートに `.env.local` を作成し、以下の変数を設定してください（`.env.example` を参照）:
+
+```dotenv
+VITE_OIDC_AUTHORITY=
+VITE_OIDC_CLIENT_ID=
+VITE_OIDC_CLIENT_SECRET=
+VITE_OIDC_REDIRECT_URI=
+```
+
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js
