@@ -33,7 +33,9 @@ public class BlueskyController {
   public List<BlueskyService> getInstances(
       @AuthenticationPrincipal Jwt jwt) {
 
-    return blueskyService.getInstances();
+    return blueskyService.getInstances(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"));
   }
 
   @PostMapping("bluesky/instances")

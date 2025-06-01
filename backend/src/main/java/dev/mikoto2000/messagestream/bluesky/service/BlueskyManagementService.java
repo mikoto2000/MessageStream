@@ -32,13 +32,17 @@ public class BlueskyManagementService {
 
   private final AccountRepository accountRepository;
   private final BlueskyServiceRepository blueskyServiceRepository;
-  private final Cache<UUID, Bluesky> bskyCache =
-      CacheBuilder.newBuilder()
-          .expireAfterAccess(10, TimeUnit.MINUTES)
-          .build();
+  private final Cache<UUID, Bluesky> bskyCache = CacheBuilder.newBuilder()
+      .expireAfterAccess(10, TimeUnit.MINUTES)
+      .build();
 
-  public List<BlueskyService> getInstances() {
-    return blueskyServiceRepository.findAll();
+  public List<BlueskyService> getInstances(
+      String iss,
+      String sub) {
+    log.info("Start getInstances by: ({}, {})", iss, sub);
+    var account = accountRepository.findByIssuerAndSub(iss, sub);
+    log.info("target account: {}", account);
+    return blueskyServiceRepository.findByAccountId(account.getId());
   }
 
   public void addInstance(
@@ -94,9 +98,9 @@ public class BlueskyManagementService {
             () -> {
               log.info("Creating new Bluesky client for service: {}", service.getId());
               return new Bluesky(
-                service.getUrl(),
-                service.getHandle(),
-                service.getAppPassword());
+                  service.getUrl(),
+                  service.getHandle(),
+                  service.getAppPassword());
             });
       } catch (ExecutionException e) {
         throw new RuntimeException("Failed to load Bluesky client", e);

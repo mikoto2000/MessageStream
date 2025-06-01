@@ -38,8 +38,13 @@ public class MastodonManagementService {
           .expireAfterAccess(10, TimeUnit.MINUTES)
           .build();
 
-  public List<MastodonService> getInstances() {
-    return mastodonServiceRepository.findAll();
+  public List<MastodonService> getInstances(
+      String iss,
+      String sub) {
+    log.info("Start getInstances by: ({}, {})", iss, sub);
+    var account = accountRepository.findByIssuerAndSub(iss, sub);
+    log.info("target account: {}", account);
+    return mastodonServiceRepository.findByAccountId(account.getId());
   }
 
   public void addInstance(

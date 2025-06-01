@@ -33,7 +33,9 @@ public class MastodonController {
   public List<MastodonService> getInstances(
       @AuthenticationPrincipal Jwt jwt) {
 
-    return mastodonService.getInstances();
+    return mastodonService.getInstances(
+        jwt.getClaimAsString("iss"),
+        jwt.getClaimAsString("sub"));
   }
 
   @PostMapping("mastodon/instances")
@@ -79,4 +81,3 @@ public class MastodonController {
         id);
   }
 }
-
