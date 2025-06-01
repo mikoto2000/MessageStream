@@ -42,6 +42,7 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
               type="text"
               value={instanceUrl}
               onChange={(e) => setInstanceUrl(e.target.value)}
+              placeholder="https://bsky.social"
               required
             />
           </label>
@@ -53,6 +54,7 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
               type="text"
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
+              placeholder="example.bsky.social"
               required
             />
           </label>
@@ -71,6 +73,15 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
         <button type="submit">登録</button>
       </form>
       {statusMessage && <p>{statusMessage}</p>}
+      <p>
+        Bluesky のアプリケーションパスワードは以下の手順で取得してください:
+      </p>
+      <ol>
+        <li>ブラウザで Bluesky のウェブサイト (bsky.app) にアクセスし、ログイン</li>
+        <li>右上のプロフィールアイコンをクリックし、「設定とプライバシー」→「開発者設定」→「アプリケーションパスワード」を開く</li>
+        <li>「新規アプリケーションパスワードを作成」を選択し、アプリ名を入力して作成</li>
+        <li>表示されたパスワードをコピーし、以下のパスワード欄に貼り付ける</li>
+      </ol>
     </>
   );
 };
