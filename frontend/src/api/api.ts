@@ -152,6 +152,12 @@ export interface Message {
      * @memberof Message
      */
     'link'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Message
+     */
+    'thumbnailUrls'?: Array<string>;
 }
 
 /**

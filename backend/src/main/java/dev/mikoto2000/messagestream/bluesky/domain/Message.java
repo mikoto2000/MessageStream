@@ -20,6 +20,6 @@ public class Message {
   private final String text;
   private final Instant postedAt;
   private final String link;
-  private final List<String> imageUrls;
+  private final List<String> thumbnailUrls;
 }
 

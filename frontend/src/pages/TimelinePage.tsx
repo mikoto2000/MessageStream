@@ -51,10 +51,21 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
       <ul>
         {messages.map((message, index) => (
           <li key={index}>
-            <div>
-              <div><img src={message.iconUrl} style={{ width: "32px", height: "32px" }} /><strong>{message.poster}</strong> on {message.serviceName}</div>
-              <div>{message.text}</div>
-              <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div>
+                <div><img src={message.iconUrl} style={{ width: "32px", height: "32px" }} /><strong>{message.poster}</strong> on {message.serviceName}</div>
+                <div>{message.text}</div>
+                <div><a href={message.link} ><small>Posted at: {message.postedAt}</small></a></div>
+              </div>
+              <div>
+                {
+                  message.thumbnailUrls ?
+                    message.thumbnailUrls.map((thumbnailUrl, imageIndex) => (
+                      <img key={imageIndex} src={thumbnailUrl} style={{ width: "64px", height: "64px" }} />
+                    ))
+                  : <></>
+                }
+              </div>
             </div>
           </li>
         ))}

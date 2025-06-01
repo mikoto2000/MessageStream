@@ -66,15 +66,15 @@ public class Bluesky {
         String text = feedPost.getText();
         Instant postedAt = Instant.parse(feedPost.getCreatedAt());
         String link = convertToHttpUrl(post.getUri());
-        List<String> imageUrls = new ArrayList<>();
+        List<String> thumbnailUrls = new ArrayList<>();
         EmbedViewUnion embed = post.getEmbed();
         if (embed instanceof EmbedImagesView images) {
           for (EmbedImagesViewImage img : images.getImages()) {
-            imageUrls.add(img.getThumb());
+            thumbnailUrls.add(img.getThumb());
           }
         }
         String serviceName = String.format("Bluesky - %s", this.url);
-        returnValue.add(new Message(serviceName, poster, iconUrl, text, postedAt, link, imageUrls));
+        returnValue.add(new Message(serviceName, poster, iconUrl, text, postedAt, link, thumbnailUrls));
       }
     }
 

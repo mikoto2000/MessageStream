@@ -36,10 +36,10 @@ public class Mastodon {
     for (Status status : homeTimeline) {
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
-        List<String> imageUrls = new ArrayList<>();
+        List<String> thumbnailUrls = new ArrayList<>();
         for (var media : status.media_attachments()) {
           if ("image".equals(media.type())) {
-            imageUrls.add(media.previewUrl());
+            thumbnailUrls.add(media.previewUrl());
           }
         }
         String link = status.url().toString();
@@ -52,7 +52,7 @@ public class Mastodon {
             text,
             status.created_at().toInstant(),
             link,
-            imageUrls));
+            thumbnailUrls));
       }
     }
 
@@ -70,10 +70,10 @@ public class Mastodon {
       }
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
-        List<String> imageUrls = new ArrayList<>();
+        List<String> thumbnailUrls = new ArrayList<>();
         for (var media : status.media_attachments()) {
           if ("image".equals(media.type())) {
-            imageUrls.add(media.previewUrl());
+            thumbnailUrls.add(media.previewUrl());
           }
         }
         String link = status.url().toString();
@@ -86,7 +86,7 @@ public class Mastodon {
             text,
             status.created_at().toInstant(),
             link,
-            imageUrls));
+            thumbnailUrls));
       }
     }
 

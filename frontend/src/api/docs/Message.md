@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **text** | **string** |  | [optional] [default to undefined]
 **postedAt** | **string** |  | [optional] [default to undefined]
 **link** | **string** |  | [optional] [default to undefined]
+**thumbnailUrls** | **Array&lt;string&gt;** |  | [optional] [default to undefined]
 
 ## Example
 
@@ -24,6 +25,7 @@ const instance: Message = {
     text,
     postedAt,
     link,
+    thumbnailUrls,
 };
 ```
 
