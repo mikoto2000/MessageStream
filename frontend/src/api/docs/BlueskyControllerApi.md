@@ -9,7 +9,7 @@ All URIs are relative to *http://localhost:8081*
 |[**getInstances1**](#getinstances1) | **GET** /bluesky/instances | |
 
 # **addInstance1**
-> addInstance1(addInstanceRequest)
+> addInstance1(addBlueskyInstanceRequest)
 
 
 ### Example
@@ -18,16 +18,16 @@ All URIs are relative to *http://localhost:8081*
 import {
     BlueskyControllerApi,
     Configuration,
-    AddInstanceRequest
+    AddBlueskyInstanceRequest
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new BlueskyControllerApi(configuration);
 
-let addInstanceRequest: AddInstanceRequest; //
+let addBlueskyInstanceRequest: AddBlueskyInstanceRequest; //
 
 const { status, data } = await apiInstance.addInstance1(
-    addInstanceRequest
+    addBlueskyInstanceRequest
 );
 ```
 
@@ -35,7 +35,7 @@ const { status, data } = await apiInstance.addInstance1(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **addInstanceRequest** | **AddInstanceRequest**|  | |
+| **addBlueskyInstanceRequest** | **AddBlueskyInstanceRequest**|  | |
 
 
 ### Return type

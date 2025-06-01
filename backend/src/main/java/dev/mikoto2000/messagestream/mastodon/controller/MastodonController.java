@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.mikoto2000.messagestream.mastodon.domain.Message;
 import dev.mikoto2000.messagestream.mastodon.entity.MastodonService;
-import dev.mikoto2000.messagestream.mastodon.model.AddInstanceRequest;
+import dev.mikoto2000.messagestream.mastodon.model.AddMastodonInstanceRequest;
 import dev.mikoto2000.messagestream.mastodon.service.MastodonManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class MastodonController {
   @PostMapping("mastodon/instances")
   public void addInstance(
       @AuthenticationPrincipal Jwt jwt,
-      @RequestBody AddInstanceRequest air) {
+      @RequestBody AddMastodonInstanceRequest air) {
 
     log.info("air: {}", air);
 

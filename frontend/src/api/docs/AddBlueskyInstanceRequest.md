@@ -1,4 +1,4 @@
-# AddInstanceRequest
+# AddBlueskyInstanceRequest
 
 
 ## Properties
@@ -6,16 +6,18 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **instanceUrl** | **string** |  | [optional] [default to undefined]
-**accessToken** | **string** |  | [optional] [default to undefined]
+**handle** | **string** |  | [optional] [default to undefined]
+**password** | **string** |  | [optional] [default to undefined]
 
 ## Example
 
 ```typescript
-import { AddInstanceRequest } from './api';
+import { AddBlueskyInstanceRequest } from './api';
 
-const instance: AddInstanceRequest = {
+const instance: AddBlueskyInstanceRequest = {
     instanceUrl,
-    accessToken,
+    handle,
+    password,
 };
 ```
 

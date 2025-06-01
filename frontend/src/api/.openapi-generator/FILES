@@ -1,10 +1,12 @@
 .gitignore
 .npmignore
+.openapi-generator-ignore
 api.ts
 base.ts
 common.ts
 configuration.ts
-docs/AddInstanceRequest.md
+docs/AddBlueskyInstanceRequest.md
+docs/AddMastodonInstanceRequest.md
 docs/BlueskyControllerApi.md
 docs/BlueskyService.md
 docs/MastodonControllerApi.md

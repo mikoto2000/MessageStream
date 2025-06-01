@@ -26,27 +26,46 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface AddInstanceRequest
+ * @interface AddBlueskyInstanceRequest
  */
-export interface AddInstanceRequest {
+export interface AddBlueskyInstanceRequest {
     /**
      * 
      * @type {string}
-     * @memberof AddInstanceRequest
+     * @memberof AddBlueskyInstanceRequest
      */
     'instanceUrl'?: string;
     /**
      * 
      * @type {string}
-     * @memberof AddInstanceRequest
+     * @memberof AddBlueskyInstanceRequest
      */
     'handle'?: string;
     /**
      * 
      * @type {string}
-     * @memberof AddInstanceRequest
+     * @memberof AddBlueskyInstanceRequest
      */
     'password'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface AddMastodonInstanceRequest
+ */
+export interface AddMastodonInstanceRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AddMastodonInstanceRequest
+     */
+    'instanceUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AddMastodonInstanceRequest
+     */
+    'accessToken'?: string;
 }
 /**
  * 
@@ -180,13 +199,13 @@ export const BlueskyControllerApiAxiosParamCreator = function (configuration?: C
     return {
         /**
          * 
-         * @param {AddInstanceRequest} addInstanceRequest 
+         * @param {AddBlueskyInstanceRequest} addBlueskyInstanceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addInstance1: async (addInstanceRequest: AddInstanceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'addInstanceRequest' is not null or undefined
-            assertParamExists('addInstance1', 'addInstanceRequest', addInstanceRequest)
+        addInstance1: async (addBlueskyInstanceRequest: AddBlueskyInstanceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addBlueskyInstanceRequest' is not null or undefined
+            assertParamExists('addInstance1', 'addBlueskyInstanceRequest', addBlueskyInstanceRequest)
             const localVarPath = `/bluesky/instances`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -206,7 +225,7 @@ export const BlueskyControllerApiAxiosParamCreator = function (configuration?: C
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addInstanceRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addBlueskyInstanceRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -283,12 +302,12 @@ export const BlueskyControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {AddInstanceRequest} addInstanceRequest 
+         * @param {AddBlueskyInstanceRequest} addBlueskyInstanceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addInstance1(addInstanceRequest: AddInstanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addInstance1(addInstanceRequest, options);
+        async addInstance1(addBlueskyInstanceRequest: AddBlueskyInstanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addInstance1(addBlueskyInstanceRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['BlueskyControllerApi.addInstance1']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -332,7 +351,7 @@ export const BlueskyControllerApiFactory = function (configuration?: Configurati
          * @throws {RequiredError}
          */
         addInstance1(requestParameters: BlueskyControllerApiAddInstance1Request, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.addInstance1(requestParameters.addInstanceRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.addInstance1(requestParameters.addBlueskyInstanceRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -361,10 +380,10 @@ export const BlueskyControllerApiFactory = function (configuration?: Configurati
 export interface BlueskyControllerApiAddInstance1Request {
     /**
      * 
-     * @type {AddInstanceRequest}
+     * @type {AddBlueskyInstanceRequest}
      * @memberof BlueskyControllerApiAddInstance1
      */
-    readonly addInstanceRequest: AddInstanceRequest
+    readonly addBlueskyInstanceRequest: AddBlueskyInstanceRequest
 }
 
 /**
@@ -382,7 +401,7 @@ export class BlueskyControllerApi extends BaseAPI {
      * @memberof BlueskyControllerApi
      */
     public addInstance1(requestParameters: BlueskyControllerApiAddInstance1Request, options?: RawAxiosRequestConfig) {
-        return BlueskyControllerApiFp(this.configuration).addInstance1(requestParameters.addInstanceRequest, options).then((request) => request(this.axios, this.basePath));
+        return BlueskyControllerApiFp(this.configuration).addInstance1(requestParameters.addBlueskyInstanceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -416,13 +435,13 @@ export const MastodonControllerApiAxiosParamCreator = function (configuration?: 
     return {
         /**
          * 
-         * @param {AddInstanceRequest} addInstanceRequest 
+         * @param {AddMastodonInstanceRequest} addMastodonInstanceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addInstance: async (addInstanceRequest: AddInstanceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'addInstanceRequest' is not null or undefined
-            assertParamExists('addInstance', 'addInstanceRequest', addInstanceRequest)
+        addInstance: async (addMastodonInstanceRequest: AddMastodonInstanceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'addMastodonInstanceRequest' is not null or undefined
+            assertParamExists('addInstance', 'addMastodonInstanceRequest', addMastodonInstanceRequest)
             const localVarPath = `/mastodon/instances`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -442,7 +461,7 @@ export const MastodonControllerApiAxiosParamCreator = function (configuration?: 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addInstanceRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addMastodonInstanceRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -548,12 +567,12 @@ export const MastodonControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {AddInstanceRequest} addInstanceRequest 
+         * @param {AddMastodonInstanceRequest} addMastodonInstanceRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addInstance(addInstanceRequest: AddInstanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addInstance(addInstanceRequest, options);
+        async addInstance(addMastodonInstanceRequest: AddMastodonInstanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addInstance(addMastodonInstanceRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MastodonControllerApi.addInstance']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -608,7 +627,7 @@ export const MastodonControllerApiFactory = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         addInstance(requestParameters: MastodonControllerApiAddInstanceRequest, options?: RawAxiosRequestConfig): AxiosPromise<void> {
-            return localVarFp.addInstance(requestParameters.addInstanceRequest, options).then((request) => request(axios, basePath));
+            return localVarFp.addInstance(requestParameters.addMastodonInstanceRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -645,10 +664,10 @@ export const MastodonControllerApiFactory = function (configuration?: Configurat
 export interface MastodonControllerApiAddInstanceRequest {
     /**
      * 
-     * @type {AddInstanceRequest}
+     * @type {AddMastodonInstanceRequest}
      * @memberof MastodonControllerApiAddInstance
      */
-    readonly addInstanceRequest: AddInstanceRequest
+    readonly addMastodonInstanceRequest: AddMastodonInstanceRequest
 }
 
 /**
@@ -666,7 +685,7 @@ export class MastodonControllerApi extends BaseAPI {
      * @memberof MastodonControllerApi
      */
     public addInstance(requestParameters: MastodonControllerApiAddInstanceRequest, options?: RawAxiosRequestConfig) {
-        return MastodonControllerApiFp(this.configuration).addInstance(requestParameters.addInstanceRequest, options).then((request) => request(this.axios, this.basePath));
+        return MastodonControllerApiFp(this.configuration).addInstance(requestParameters.addMastodonInstanceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

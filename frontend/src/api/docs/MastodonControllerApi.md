@@ -10,7 +10,7 @@ All URIs are relative to *http://localhost:8081*
 |[**getPublicTimeline**](#getpublictimeline) | **POST** /mastodon/pub | |
 
 # **addInstance**
-> addInstance(addInstanceRequest)
+> addInstance(addMastodonInstanceRequest)
 
 
 ### Example
@@ -19,16 +19,16 @@ All URIs are relative to *http://localhost:8081*
 import {
     MastodonControllerApi,
     Configuration,
-    AddInstanceRequest
+    AddMastodonInstanceRequest
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new MastodonControllerApi(configuration);
 
-let addInstanceRequest: AddInstanceRequest; //
+let addMastodonInstanceRequest: AddMastodonInstanceRequest; //
 
 const { status, data } = await apiInstance.addInstance(
-    addInstanceRequest
+    addMastodonInstanceRequest
 );
 ```
 
@@ -36,7 +36,7 @@ const { status, data } = await apiInstance.addInstance(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **addInstanceRequest** | **AddInstanceRequest**|  | |
+| **addMastodonInstanceRequest** | **AddMastodonInstanceRequest**|  | |
 
 
 ### Return type

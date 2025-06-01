@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import './App.css'
 import TimelinePage from "./pages/TimelinePage";
 import BlueskyRegisterPage from "./pages/BlueskyRegisterPage";
+import MastodonRegisterPage from "./pages/MastodonRegisterPage";
 
 function App() {
   const auth = useAuth();
@@ -54,6 +55,7 @@ function App() {
           <nav>
             <Link to="/">Timeline</Link>{" | "}
             <Link to="/bluesky">Bluesky インスタンス登録</Link>{" | "}
+            <Link to="/mastodon">Mastodon インスタンス登録</Link>{" | "}
             <button onClick={() => {
               // セッションストレージ・ローカルストレージからユーザー情報を削除
               auth.removeUser();
@@ -71,6 +73,7 @@ function App() {
           <Routes>
             <Route path="/" element={<TimelinePage user={auth.user?.profile?.name} accessToken={accessToken} />} />
             <Route path="/bluesky" element={<BlueskyRegisterPage accessToken={accessToken} />} />
+            <Route path="/mastodon" element={<MastodonRegisterPage accessToken={accessToken} />} />
           </Routes>
         </main>
       </>

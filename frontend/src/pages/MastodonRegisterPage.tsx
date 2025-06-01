@@ -1,26 +1,24 @@
 import { useState } from 'react';
-import { BlueskyControllerApi } from '../api';
+import { MastodonControllerApi } from '../api';
 import { createConfig } from '../ApiConfig';
 
-type BlueskyRegisterPageProps = {
+type MastodonRegisterPageProps = {
   accessToken: string;
 };
 
-export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ accessToken }) => {
+export const MastodonRegisterPage: React.FC<MastodonRegisterPageProps> = ({ accessToken }) => {
   const [instanceUrl, setInstanceUrl] = useState('');
-  const [handle, setHandle] = useState('');
-  const [password, setPassword] = useState('');
+  const [mastodonAccessToken, setMastodonAccessToken] = useState('');
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const api = new BlueskyControllerApi(createConfig(accessToken));
+    const api = new MastodonControllerApi(createConfig(accessToken));
     try {
-      await api.addInstance1({ addBlueskyInstanceRequest: { instanceUrl, handle, password } });
+      await api.addInstance({ addMastodonInstanceRequest: { instanceUrl, accessToken: mastodonAccessToken } });
       setStatusMessage('登録に成功しました。');
       setInstanceUrl('');
-      setHandle('');
-      setPassword('');
+      setMastodonAccessToken('');
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof Error) {
@@ -33,7 +31,7 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
 
   return (
     <>
-      <h2>Bluesky インスタンス登録</h2>
+      <h2>Mastodon インスタンス登録</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -48,22 +46,11 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
         </div>
         <div>
           <label>
-            ハンドル:
+            アクセストークン:
             <input
               type="text"
-              value={handle}
-              onChange={(e) => setHandle(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            パスワード:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={mastodonAccessToken}
+              onChange={(e) => setMastodonAccessToken(e.target.value)}
               required
             />
           </label>
@@ -75,4 +62,4 @@ export const BlueskyRegisterPage: React.FC<BlueskyRegisterPageProps> = ({ access
   );
 };
 
-export default BlueskyRegisterPage;
+export default MastodonRegisterPage;

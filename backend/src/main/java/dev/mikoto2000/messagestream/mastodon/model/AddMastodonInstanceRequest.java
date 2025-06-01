@@ -1,4 +1,4 @@
-package dev.mikoto2000.messagestream.bluesky.model;
+package dev.mikoto2000.messagestream.mastodon.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddInstanceRequest {
+public class AddMastodonInstanceRequest {
   private String instanceUrl;
-  private String handle;
-  private String password;
+  private String accessToken;
 }
+
 

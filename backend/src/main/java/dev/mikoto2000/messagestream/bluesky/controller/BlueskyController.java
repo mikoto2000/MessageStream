@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.mikoto2000.messagestream.bluesky.domain.Message;
 import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
-import dev.mikoto2000.messagestream.bluesky.model.AddInstanceRequest;
+import dev.mikoto2000.messagestream.bluesky.model.AddBlueskyInstanceRequest;
 import dev.mikoto2000.messagestream.bluesky.service.BlueskyManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class BlueskyController {
   @PostMapping("bluesky/instances")
   public void addInstance(
       @AuthenticationPrincipal Jwt jwt,
-      @RequestBody AddInstanceRequest air) {
+      @RequestBody AddBlueskyInstanceRequest air) {
 
     log.info("air: {}", air);
 
