@@ -23,7 +23,7 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
         clearInterval(interval);
       };
     }
-  }, []);
+  }, [accessToken]);
 
   const fetchMessages = () => {
     if (accessToken) {
