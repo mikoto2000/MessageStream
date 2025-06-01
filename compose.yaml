@@ -2,7 +2,7 @@ services:
   dev:
     image: mcr.microsoft.com/devcontainers/java:1-21-bookworm
     environment:
-      POSTGRES_URL: jdbc:postgresql://postgres:5432/messagestream
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/messagestream
     volumes:
       - ./:/workspaces
     ports:

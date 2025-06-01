@@ -1,38 +1,35 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/public
-    username: admin
-    password: password
-    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/public}
+    username: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER_CLASS_NAME:org.postgresql.Driver}
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
+    show-sql: ${SPRING_JPA_SHOW_SQL:true}
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
   security:
     oauth2:
       resourceserver:
         jwt:
           # 認可サーバーのエンドポイントを設定
-          issuer-uri: http://keycloak:8080/realms/myrealm
+          issuer-uri: ${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI:http://keycloak:8080/realms/myrealm}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 logging:
   level:
-    org.springframework: INFO
-    org.hibernate.SQL: DEBUG
+    org.springframework: ${LOGGING_LEVEL_ORG_SPRINGFRAMEWORK:INFO}
+    org.hibernate.SQL: ${LOGGING_LEVEL_ORG_HIBERNATE_SQL:DEBUG}
 
 messagestream:
   cors:
-    # CORS 設定を application.yaml で外部化
-    allowed-origin-patterns:
-      - "*"
-    allowed-methods:
-      - "*"
-    allowed-headers:
-      - "*"
-    allow-credentials: true
-    mapping-path: "/**"
+    # CORS 設定を環境変数で上書き可能に
+    allowed-origin-patterns: ${MESSAGESTREAM_CORS_ALLOWED_ORIGIN_PATTERNS:*}
+    allowed-methods:          ${MESSAGESTREAM_CORS_ALLOWED_METHODS:*}
+    allowed-headers:          ${MESSAGESTREAM_CORS_ALLOWED_HEADERS:*}
+    allow-credentials:        ${MESSAGESTREAM_CORS_ALLOW_CREDENTIALS:true}
+    mapping-path:             ${MESSAGESTREAM_CORS_MAPPING_PATH:/**}
 
