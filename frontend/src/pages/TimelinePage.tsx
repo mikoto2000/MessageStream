@@ -47,8 +47,7 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
   }
   return (
     <>
-      <h1>Welcome, {user}!</h1>
-      <h2>Messages</h2>
+      <h2>{user} timeline</h2>
       <ul>
         {messages.map((message, index) => (
           <li key={index}>
@@ -64,7 +63,7 @@ export const TimelinePage: React.FC<TimelinePageProps> = ({ user, accessToken })
         {
           import.meta.env.DEV
             ?
-            <pre>
+            <pre style={{ width: "100%", whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
               {JSON.stringify(messages, null, 2)}
             </pre>
             :

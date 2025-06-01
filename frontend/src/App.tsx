@@ -7,18 +7,21 @@ function App() {
   const auth = useAuth();
 
   if (!auth.isAuthenticated) {
-    return <button onClick={() => {
-      // ログイン後に元居たページに戻れるように、
-      // 今いるパスをセッションストレージに記憶しておく
-      sessionStorage.setItem('path', location.pathname);
+    return <div>
+      <h1>Message Stream</h1>
+      <button onClick={() => {
+        // ログイン後に元居たページに戻れるように、
+        // 今いるパスをセッションストレージに記憶しておく
+        sessionStorage.setItem('path', location.pathname);
 
-      // state の削除
-      auth.clearStaleState();
+        // state の削除
+        auth.clearStaleState();
 
-      // 認可サーバーにアクセスしてログイン、
-      // ログインに成功したら redirect_uri にリダイレクト
-      auth.signinRedirect();
-    }}>Log in</button>
+        // 認可サーバーにアクセスしてログイン、
+        // ログインに成功したら redirect_uri にリダイレクト
+        auth.signinRedirect();
+      }}>Log in</button>
+    </div>
   }
 
   if (auth.error) {
@@ -43,17 +46,20 @@ function App() {
   if (auth.isAuthenticated) {
     return (
       <>
-        <button onClick={() => {
-          // セッションストレージ・ローカルストレージからユーザー情報を削除
-          auth.removeUser();
+        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+          <h1>Message Stream</h1>
+          <button onClick={() => {
+            // セッションストレージ・ローカルストレージからユーザー情報を削除
+            auth.removeUser();
 
-          // OIDC 認可サーバーにセッションを破棄するように依頼して、
-          // 破棄したら post_logout_redirect_uri にリダイレクトする
-          auth.signoutRedirect({
-            id_token_hint: auth.user?.id_token,
-            post_logout_redirect_uri: "http://localhost:5173"
-          });
-        }}>Log out</button>
+            // OIDC 認可サーバーにセッションを破棄するように依頼して、
+            // 破棄したら post_logout_redirect_uri にリダイレクトする
+            auth.signoutRedirect({
+              id_token_hint: auth.user?.id_token,
+              post_logout_redirect_uri: "http://localhost:5173"
+            });
+          }}>Log out</button>
+        </div>
         <TimelinePage
           user={auth?.user?.profile?.name}
           accessToken={auth.user?.access_token || ""}
