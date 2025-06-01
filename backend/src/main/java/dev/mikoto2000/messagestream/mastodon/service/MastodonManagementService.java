@@ -2,12 +2,15 @@ package dev.mikoto2000.messagestream.mastodon.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Service;
 
-import dev.mikoto2000.messagestream.bluesky.domain.Bluesky;
-import dev.mikoto2000.messagestream.bluesky.entity.BlueskyService;
-import dev.mikoto2000.messagestream.bluesky.repository.BlueskyServiceRepository;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import dev.mikoto2000.messagestream.mastodon.domain.Mastodon;
 import dev.mikoto2000.messagestream.mastodon.domain.Message;
 import dev.mikoto2000.messagestream.mastodon.entity.MastodonService;
@@ -27,6 +30,11 @@ public class MastodonManagementService {
 
   private final AccountRepository accountRepository;
   private final MastodonServiceRepository mastodonServiceRepository;
+
+  private final Cache<UUID, Mastodon> mastodonCache =
+      CacheBuilder.newBuilder()
+          .expireAfterAccess(10, TimeUnit.MINUTES)
+          .build();
 
   public List<MastodonService> getInstances() {
     return mastodonServiceRepository.findAll();
@@ -64,13 +72,21 @@ public class MastodonManagementService {
 
     log.info("mastodon: {}", mastodons);
 
-    // TODO: インスタンスを毎回 new しないようにする
     List<Message> messages = new ArrayList<>();
     for (var mastodon : mastodons) {
-      var m = new Mastodon(
-          mastodon.getUrl(),
-          mastodon.getAccessToken());
-
+      Mastodon m;
+      try {
+        m = mastodonCache.get(
+            mastodon.getId(),
+            () -> {
+              log.info("Creating new Mastodon client for service: {}", mastodon.getId());
+              return new Mastodon(
+                mastodon.getUrl(),
+                mastodon.getAccessToken());
+            });
+      } catch (ExecutionException e) {
+        throw new RuntimeException("Failed to load Mastodon client", e);
+      }
       messages.addAll(m.getHomeTimeline());
     }
 
@@ -92,13 +108,21 @@ public class MastodonManagementService {
 
     log.info("mastodon: {}", mastodons);
 
-    // TODO: インスタンスを毎回 new しないようにする
     List<Message> messages = new ArrayList<>();
     for (var mastodon : mastodons) {
-      var m = new Mastodon(
-          mastodon.getUrl(),
-          mastodon.getAccessToken());
-
+      Mastodon m;
+      try {
+        m = mastodonCache.get(
+            mastodon.getId(),
+            () -> {
+              log.info("Creating new Mastodon client for service: {}", mastodon.getId());
+              return new Mastodon(
+                mastodon.getUrl(),
+                mastodon.getAccessToken());
+            });
+      } catch (ExecutionException e) {
+        throw new RuntimeException("Failed to load Mastodon client", e);
+      }
       messages.addAll(m.getPublicTimeline());
     }
 
