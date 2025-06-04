@@ -57,9 +57,10 @@ public class BlueskyManagementService {
     log.info("target account: {}", account);
 
     // Validate connection to the Bluesky instance with provided credentials
+    Bluesky bluesky;
     try {
       log.debug("Testing connection to Bluesky instance: url={}, handle={}", instanceUrl, handle);
-      new Bluesky(instanceUrl, handle, password);
+      bluesky = new Bluesky(instanceUrl, handle, password);
     } catch (Exception e) {
       log.error("Failed to connect to Bluesky instance url={} with handle={}", instanceUrl, handle, e);
       throw new ResponseStatusException(
@@ -68,12 +69,25 @@ public class BlueskyManagementService {
           e);
     }
 
-    blueskyServiceRepository.save(new BlueskyService(
+    BlueskyService service = new BlueskyService(
         null,
         account.getId(),
         instanceUrl,
         handle,
-        password));
+        password,
+        null,
+        null,
+        null);
+    
+    BlueskyService savedService = blueskyServiceRepository.save(service);
+    
+    // Set up token update callback after saving the service
+    bluesky.setTokenUpdateCallback(tokenInfo -> {
+      savedService.setAccessToken(tokenInfo.accessToken);
+      savedService.setRefreshToken(tokenInfo.refreshToken);
+      savedService.setTokenExpiresAt(tokenInfo.expiresAt);
+      blueskyServiceRepository.save(savedService);
+    });
   }
 
   public List<Message> getHomeTimeline(
@@ -97,10 +111,28 @@ public class BlueskyManagementService {
             service.getId(),
             () -> {
               log.info("Creating new Bluesky client for service: {}", service.getId());
-              return new Bluesky(
-                  service.getUrl(),
-                  service.getHandle(),
-                  service.getAppPassword());
+              
+              // Try to use stored tokens first, fallback to password authentication
+              if (service.getAccessToken() != null && service.getRefreshToken() != null && service.getTokenExpiresAt() != null) {
+                Bluesky bluesky = new Bluesky(
+                    service.getUrl(),
+                    service.getAccessToken(),
+                    service.getRefreshToken(),
+                    service.getTokenExpiresAt(),
+                    tokenInfo -> {
+                      service.setAccessToken(tokenInfo.accessToken);
+                      service.setRefreshToken(tokenInfo.refreshToken);
+                      service.setTokenExpiresAt(tokenInfo.expiresAt);
+                      blueskyServiceRepository.save(service);
+                    });
+                return bluesky;
+              } else {
+                // Fallback to password authentication
+                return new Bluesky(
+                    service.getUrl(),
+                    service.getHandle(),
+                    service.getAppPassword());
+              }
             });
       } catch (ExecutionException e) {
         throw new RuntimeException("Failed to load Bluesky client", e);

@@ -17,6 +17,9 @@ create table bluesky_service (
   url text not null,
   handle text not null,
   app_password text not null,
+  access_token text,
+  refresh_token text,
+  token_expires_at timestamp,
   unique (url, handle)
 );
 

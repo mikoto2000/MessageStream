@@ -1,5 +1,6 @@
 package dev.mikoto2000.messagestream.bluesky.entity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -24,4 +25,7 @@ public class BlueskyService {
   private String url;
   private String handle;
   private String appPassword;
+  private String accessToken;
+  private String refreshToken;
+  private LocalDateTime tokenExpiresAt;
 }
