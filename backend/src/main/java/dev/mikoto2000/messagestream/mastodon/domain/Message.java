@@ -17,6 +17,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class Message {
+  private final String id;
   private final String serviceName;
   private final String poster;
   private final String iconUrl;
