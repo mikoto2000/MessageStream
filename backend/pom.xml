@@ -89,12 +89,6 @@
     <version>1.8.1</version>
   </dependency>
 
-  <dependency>
-    <groupId>org.mastodon4j</groupId>
-    <artifactId>mastodon4j-core</artifactId>
-    <version>0.10.0</version>
-  </dependency>
-
   <!-- Mastodon -->
   <dependency>
     <groupId>org.mastodon4j</groupId>
