@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -16,13 +17,14 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Message {
-  private final String id;
   private final String serviceName;
   private final String poster;
   private final String iconUrl;
   private final String text;
   private final Instant postedAt;
+  @EqualsAndHashCode.Include
   private final String link;
   private final List<String> thumbnailUrls;
   private final List<String> imageUrls;

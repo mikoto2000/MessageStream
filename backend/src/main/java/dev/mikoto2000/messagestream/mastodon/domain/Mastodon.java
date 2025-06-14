@@ -36,7 +36,6 @@ public class Mastodon {
 
     List<Message> returnValue = new ArrayList<>();
     for (Status status : homeTimeline) {
-      var id = status.id();
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
         List<String> thumbnailUrls = new ArrayList<>();
@@ -51,7 +50,6 @@ public class Mastodon {
         String serviceName = String.format("Mastodon - %s", this.url);
         String iconUrl = status.account().avatar();
         returnValue.add(new Message(
-            id,
             serviceName,
             status.account().display_name(),
             iconUrl,
@@ -72,10 +70,6 @@ public class Mastodon {
 
     Set<Message> returnValue = new HashSet<>();
     for (Status status : publicTimeline) {
-      if (!status.account().url().startsWith(this.url)) {
-        continue;
-      }
-      var id = status.id();
       var text = Jsoup.parse(status.content()).text();
       if (text != null && !text.isEmpty()) {
         List<String> thumbnailUrls = new ArrayList<>();
@@ -90,7 +84,6 @@ public class Mastodon {
         String serviceName = String.format("Mastodon - %s", this.url);
         String iconUrl = status.account().avatar();
         returnValue.add(new Message(
-            id,
             serviceName,
             status.account().display_name(),
             iconUrl,

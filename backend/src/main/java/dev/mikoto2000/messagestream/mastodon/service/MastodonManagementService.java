@@ -1,7 +1,9 @@
 package dev.mikoto2000.messagestream.mastodon.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -127,7 +129,7 @@ public class MastodonManagementService {
 
     log.info("mastodon: {}", mastodons);
 
-    List<Message> messages = new ArrayList<>();
+    Set<Message> messages = new HashSet<>();
     for (var mastodon : mastodons) {
       Mastodon m;
       try {
@@ -147,7 +149,7 @@ public class MastodonManagementService {
 
     log.info("End getHomeTimeline");
 
-    return messages;
+    return new ArrayList<>(messages);
   }
 
   public void deleteInstance(
